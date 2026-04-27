@@ -171,7 +171,13 @@
   gap: 12px;
 }
 
+.container_btn{
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
 .btn-save {
+  margin-top: 20px;
   flex: 1;
   padding: 12px;
   border: none !important;

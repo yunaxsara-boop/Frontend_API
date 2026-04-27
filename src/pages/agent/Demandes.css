@@ -163,7 +163,7 @@
 
 .dem-empty {
   text-align: center !important;
-  color: #c4a882 !important;
+  color: #faf7f2 !important;
   padding: 48px !important;
   font-style: italic;
   font-size: 13px !important;
@@ -226,6 +226,7 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
+  -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
 }
 

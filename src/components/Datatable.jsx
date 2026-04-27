@@ -156,7 +156,7 @@ export default function DataTable({
               <tr key={row.id_brevet}>
                 {columns.map((c) => (
                   <td key={c.key}>
-                    {c.render ? c.render(row[c.key]): row[c.key]}
+                    {c.render ? c.render(row[c.key], row): row[c.key]}
                   </td>
                 ))}
                 <td className="dt-actions-cell">

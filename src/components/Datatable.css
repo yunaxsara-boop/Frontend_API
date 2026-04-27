@@ -16,7 +16,7 @@
   gap: 24px;
   align-items: flex-start;
   padding: 28px;
-  background: #f4f0ea;
+  background: #ffffff;
   min-height: 100vh;
   font-family: "DM Sans", "Segoe UI", Arial, sans-serif;
 }
@@ -38,7 +38,7 @@
    ───────────────────────────────────────────────────────── */
 .dt-container {
   padding: 28px;
-  background: #f4f0ea;
+  background: #faf7f2;
   min-height: 100vh;
   font-family: "DM Sans", "Segoe UI", Arial, sans-serif;
 }
@@ -81,6 +81,7 @@
 .user-form input,
 .user-form select {
   width: 100%;
+  height: 100%;
   padding: 10px 12px;
   border: 1.5px solid #f0ddd0 !important;
   border-radius: 9px;
@@ -269,6 +270,7 @@
   border: none !important;
   background: transparent !important;
   cursor: pointer;
+  -webkit-user-select: none;
   user-select: none;
   transition: opacity .15s;
 }
@@ -380,3 +382,21 @@
 .dt-pg-btn:disabled { opacity: .35; cursor: default; }
 
 .dt-pg-ellipsis { font-size: 13px; color: #c4a882; padding: 0 3px; }
+
+.btn{
+    margin-top: 20px;
+  flex: 1;
+  padding: 12px;
+  border: none !important;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #EA6113, #F88F22) !important;
+  color: #fff !important;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity .18s, transform .15s;
+  box-shadow: 0 3px 12px rgba(248,143,34,0.35);
+  font-family: inherit;
+}
+
+.btn:hover { opacity: .9; transform: translateY(-1px); }

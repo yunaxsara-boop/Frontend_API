@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getBrevetById} from "../../features/brevets/brevetApi";
+import { addDocument } from "../../features/documents/documentApi";
 import "./viewBrevet.css"
 
 export default function ViewBrevet() {
@@ -9,6 +10,7 @@ export default function ViewBrevet() {
   const [data, setData] = useState(null)   // pour stocker le brevet
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
+
 
   useEffect(() => {
    const fetch = async () =>{
@@ -24,6 +26,7 @@ export default function ViewBrevet() {
    }
     fetch()
   }, [id]);
+
 
   if(loading) return <p> Loading </p>
   if (error)   return <p style={{ color: "red" }}>{error}</p>
@@ -50,10 +53,14 @@ export default function ViewBrevet() {
         {/* Documents */}
         <div className="view-docs">
           <p className="view-docs-title">📎 Documents joints</p>
-          {data.documents?.length > 0 ? (
+          
+          {data.document_set?.length > 0 ? (
             <ul className="view-docs-list">
-              {data.documents.map((doc, i) => (
-                <li key={i} className="view-doc-item">{doc}</li>
+              {data.document_set.map((doc) => (
+                <li key={doc.id_document} className="view-doc-item">
+                   <span> {doc.nom_document} </span> 
+                   <span>{doc.date_ajout}</span>
+                </li>
               ))}
             </ul>
           ) : (

@@ -61,13 +61,15 @@ export default function Brevets() {
     pdfFormat: (val) => Array.isArray(val)? val.map(i => `${i.nom_inv} ${i.prenom_inv}`).join(", ") : "Aucun"},
   { key: "statut", label: "Statut" },
   {
-    key: "id_document",
+    key: "document_set",
     label: "Documents",
-    render: (value) =>
-      Array.isArray(value) && value.length > 0 
-        ? value.map(d => d.nom_document). join(", ")
-        : "Aucun",
-    pdfExclude: true
+    render: (value, row) =>(
+      <button className="btn" onClick={()=> navigate(`/agent/documents?brevet=${row.id_brevet}`)}>
+        {value?.length > 0 ? `${value.length} document(s)` : "Ajouter document"}
+      </button> 
+        
+    ),
+    pdfExclude: true   
   },
 ]}
       onAdd={() => navigate("/agent/brevets/add")}

@@ -9,15 +9,25 @@ export const getDocuments = async (id) => {
 };
 
 
-export const addDocument =async (document) => {
-  const res = await api.post("documents/", document);
+export const addDocument = async (data) => {
+  const isFormData = data instanceof FormData;
+  const res = await api.post("documents/", data,{
+    headers: isFormData ? 
+    {"Content-Type": "multipart/form-data"} 
+    : {"Content-Type": "application/json"}
+  });
   return res.data;
-  alert ("brevet ajouter !")
+  alert ("document ajouter !")
 };
 
 
-export const updateDocument = async (id, document) => {
-  const res = await api.patch(`documents/${id}/`, document);
+export const updateDocument = async (id, data) => {
+  const isFormData = data instanceof FormData;
+  const res = await api.patch(`documents/${id}/`, data, {
+    headers: isFormData ?
+    {"Content-Type": "multipart/form-data"}
+    : {"Content-Type": "application/json"}
+   },);
   return res.data;
 };
 
@@ -30,4 +40,9 @@ export const deleteDocument = async (id) => {
 export const getDocumentById = async (id) => {
   const res = await api.get (`documents/${id}/`);
   return res.data;
+};
+
+export const getDocumentsByBrevet = async (brevetId) => {
+  const res = await api.get(`documents/?brevet=${brevetId}`);
+  return res.data.results ?? res.data;
 };
