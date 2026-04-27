@@ -21,12 +21,11 @@ export default function AddBrevet() {
     documents: [],
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
-  };
 
   const handleFiles = (e) => {
-    const files = Array.from(e.target.files).map(f => f.name);
+    const files = Array.from(e.target.files).map((f) => f.name);
     setForm({ ...form, documents: [...form.documents, ...files] });
   };
 
@@ -53,32 +52,38 @@ export default function AddBrevet() {
       <h2>Ajouter Brevet</h2>
         {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <div className="form-grid">
+        <div className="brevet-grid">
 
-        <div className="form-group">
-          <label>Num brevet</label>
-          <input name="num_brevet" onChange={handleChange} />
-        </div>
+          {/* ── Identification ── */}
+          <div className="brevet-section-label">Identification</div>
 
-        <div className="form-group">
-          <label>Titre</label>
-          <input name="titre" onChange={handleChange} />
-        </div>
+          <div className="form-group">
+            <label>Numéro brevet</label>
+            <input name="num_brevet" placeholder="Ex : BR-2024-001" onChange={handleChange} />
+          </div>
 
-        <div className="form-group">
-          <label>Num dépôt</label>
-          <input name="num_depo" onChange={handleChange} />
-        </div>
+          <div className="form-group">
+            <label>Titre de l'invention</label>
+            <input name="titre" placeholder="Titre complet" onChange={handleChange} />
+          </div>
 
-        <div className="form-group">
-          <label>Titulaire</label>
-          <input name="titulaire" onChange={handleChange} />
-        </div>
+          <div className="form-group">
+            <label>Numéro de dépôt</label>
+            <input name="num_depo" placeholder="Ex : DEP-2024-001" onChange={handleChange} />
+          </div>
 
-        <div className="form-group">
-          <label>Date dépôt</label>
-          <input type="date" name="date_depo" onChange={handleChange} />
-        </div>
+          <div className="form-group">
+            <label>Titulaire</label>
+            <input name="titulaire" placeholder="Nom du titulaire" onChange={handleChange} />
+          </div>
+
+          {/* ── Dates ── */}
+          <div className="brevet-section-label">Dates</div>
+
+          <div className="form-group">
+            <label>Date de dépôt</label>
+            <input type="date" name="date_depo" onChange={handleChange} />
+          </div>
 
         <div className="form-group">
           <label>Date sortie</label>
@@ -95,28 +100,29 @@ export default function AddBrevet() {
           <input name="Deposants" onChange={handleChange} />
         </div>
 
-        <div className="form-group full-width">
-          <label>Status</label>
-          <select name="status" onChange={handleChange}>
-            <option value="EN_ATTENTE">EN_ATTENTE</option>
-            <option value="ACCEPTER">ACCEPTER</option>
-            <option value="REFUSER">REFUSER</option>
-          </select>
-        </div>
+          {/* ── Statut ── */}
+          <div className="brevet-section-label">Statut &amp; Documents</div>
 
-        <div className="form-group full-width">
-          <label>Documents</label>
-
-          <div className="docs-box">
-            <input type="file" multiple onChange={handleFiles} />
-
-            {form.documents.map((doc, i) => (
-              <div key={i} className="doc-item">{doc}</div>
-            ))}
+          <div className="form-group">
+            <label>Statut</label>
+            <select name="status" onChange={handleChange}>
+              <option value="EN_ATTENTE">EN ATTENTE</option>
+              <option value="ACCEPTER">ACCEPTER</option>
+              <option value="REFUSER">REFUSER</option>
+            </select>
           </div>
-        </div>
 
-      </div>
+          <div className="form-group full-width">
+            <label>Documents</label>
+            <div className="docs-box">
+              <input type="file" multiple onChange={handleFiles} />
+              {form.documents.map((doc, i) => (
+                <div key={i} className="doc-item">{doc}</div>
+              ))}
+            </div>
+          </div>
+
+        </div>
 
       <div className="form-actions">
         <button className="btn-save" onClick={handleSubmit} disabled={loading} >

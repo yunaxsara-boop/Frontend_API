@@ -7,7 +7,6 @@ import Brevets from "./Brevets";
 export default function EditBrevet() {
   const { id } = useParams();
   const navigate = useNavigate();
-
   const [form, setForm] = useState(null);
 
   const [loading, setLoading] = useState(true)
@@ -30,12 +29,11 @@ export default function EditBrevet() {
     fetchBrevet()
   }, [id]);
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
-  };
 
   const handleFile = (e) => {
-    const files = Array.from(e.target.files).map(f => f.name);
+    const files = Array.from(e.target.files).map((f) => f.name);
     setForm({ ...form, documents: [...(form.documents || []), ...files] });
   };
 
@@ -57,11 +55,14 @@ export default function EditBrevet() {
   if (!form)   return <p>Brevet introuvable</p>
 
   return (
-    <div className="edit-container">
+    <div className="brevet-page">
+      <div className="brevet-card">
+        <h2 className="brevet-title">Modifier le brevet</h2>
 
-  <h2 className="edit-title">✏️ Modifier Brevet</h2>
+        <div className="brevet-grid">
 
-  <div className="edit-form">
+          {/* ── Identification ── */}
+          <div className="brevet-section-label">Identification</div>
 
     <label>Num brevet</label>
     <input name="num_brevet" value={form.num_brevet ?? ""} onChange={handleChange} />
@@ -87,12 +88,14 @@ export default function EditBrevet() {
     <label>Déposant</label>
     <input name="nom_deposant" value={form.nom_dep} onChange={handleChange} />
 
-    <label>Status</label>
-    <select name="status" value={form.status} onChange={handleChange}>
-      <option value="EN_ATTENTE">EN_ATTENTE</option>
-      <option value="ACCEPTER">ACCEPTER</option>
-      <option value="REFUSER">REFUSER</option>
-    </select>
+          <div className="form-group">
+            <label>Statut</label>
+            <select name="status" value={form.status} onChange={handleChange}>
+              <option value="EN_ATTENTE">EN ATTENTE</option>
+              <option value="ACCEPTER">ACCEPTER</option>
+              <option value="REFUSER">REFUSER</option>
+            </select>
+          </div>
 
     <label>Ajouter documents</label>
     <input type="file" multiple onChange={handleFile} />
@@ -103,23 +106,21 @@ export default function EditBrevet() {
       )}
     </ul>
 
-    <div className="edit-actions">
-      <button
-        className="edit-save-btn"
-        onClick={() => {
-          updateBrevet(id, form);
-          navigate("/agent/brevets");
-        }}
-      >
-        💾 Enregistrer
-      </button>
-
-      <button className="edit-cancel-btn" onClick={() => navigate("/agent/brevets")}>
-        Annuler
-      </button>
+        <div className="brevet-actions">
+          <button
+            className="btn-save"
+            onClick={() => {
+              updateBrevet(id, form);
+              navigate("/agent/brevets");
+            }}
+          >
+            Enregistrer les modifications
+          </button>
+          <button className="btn-cancel" onClick={() => navigate("/agent/brevets")}>
+            Annuler
+          </button>
+        </div>
+      </div>
     </div>
-
-  </div>
-</div>
   );
 }

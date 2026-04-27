@@ -1,217 +1,382 @@
-.dt-container {
-  width: 95%;
-  margin: 20px auto;
-  font-family: Arial, sans-serif;
+/* ═══════════════════════════════════════════════════════════
+   SUNSET PALETTE  —  datatable.css  (partagé DataTable + Datatable2)
+   #EA6113  orange brûlé   primaire foncé
+   #F88F22  orange vif     primaire
+   #FBB931  or chaud       accent
+   #FFE3B3  crème claire   fond doux
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────────────
+   1. LAYOUT — Datatable2  (formulaire gauche | table droite)
+   ───────────────────────────────────────────────────────── */
+.dt-layout {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 24px;
+  align-items: flex-start;
+  padding: 28px;
+  background: #f4f0ea;
+  min-height: 100vh;
+  font-family: "DM Sans", "Segoe UI", Arial, sans-serif;
 }
 
-/* ===== HEADER ===== */
+.dt-left {
+  width: 340px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 24px;
+}
+
+.dt-right {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ─────────────────────────────────────────────────────────
+   2. LAYOUT — DataTable  (pleine largeur, pas de form)
+   ───────────────────────────────────────────────────────── */
+.dt-container {
+  padding: 28px;
+  background: #f4f0ea;
+  min-height: 100vh;
+  font-family: "DM Sans", "Segoe UI", Arial, sans-serif;
+}
+
+/* ─────────────────────────────────────────────────────────
+   3. FORM CARD  (utilisé dans Datatable2)
+   ───────────────────────────────────────────────────────── */
+.user-form {
+  background: #fff;
+  border-radius: 16px;
+  padding: 26px;
+  border: 1px solid #f5ece0;
+  box-shadow: 0 2px 8px rgba(234,97,19,.06);
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.user-form h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 4px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #faf0e6;
+  position: relative;
+}
+
+.user-form h3::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, #EA6113, #FBB931);
+  border-radius: 2px;
+}
+
+.user-form input,
+.user-form select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid #f0ddd0 !important;
+  border-radius: 9px;
+  font-size: 13px;
+  background: #fdf8f3 !important;
+  color: #2d2013;
+  font-family: inherit;
+  transition: border .15s, box-shadow .15s;
+  outline: none !important;
+  appearance: auto;
+}
+
+.user-form input:focus,
+.user-form select:focus {
+  border-color: #F88F22 !important;
+  background: #fff !important;
+  box-shadow: 0 0 0 3px rgba(248,143,34,0.18) !important;
+}
+
+.user-form input::placeholder { color: #c4a882; font-size: 12.5px; }
+
+.user-form button[type="submit"] {
+  width: 100%;
+  padding: 11px;
+  border: none !important;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #EA6113, #F88F22) !important;
+  color: #fff !important;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity .18s, transform .15s;
+  box-shadow: 0 2px 10px rgba(248,143,34,0.30);
+  font-family: inherit;
+  margin-top: 2px;
+}
+
+.user-form button[type="submit"]:hover { opacity: .9; transform: translateY(-1px); }
+
+.user-form .cancel-btn,
+.user-form button[type="button"] {
+  width: 100%;
+  padding: 10px;
+  border: 1.5px solid #f0ddd0 !important;
+  border-radius: 9px;
+  background: #fff !important;
+  color: #6b7280 !important;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .15s;
+  margin-top: -4px;
+}
+
+.user-form .cancel-btn:hover,
+.user-form button[type="button"]:hover { background: #fdf5ec !important; }
+
+/* ─────────────────────────────────────────────────────────
+   4. HEADER  (partagé)
+   ───────────────────────────────────────────────────────── */
 .dt-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 18px;
 }
 
 .dt-title {
-  color: #333;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0;
+  letter-spacing: -0.3px;
 }
 
-/* ===== BUTTONS ===== */
+.dt-actions { display: flex; gap: 8px; }
+
 .dt-btn {
-  margin-left: 8px;
-  padding: 7px 12px;
-  border: none;
-  border-radius: 6px;
-  background: #ff7a18;
-  color: white;
-  cursor: pointer;
-}
-
-.dt-btn:hover {
-  background: #e86a10;
-}
-
-/* ICON BUTTONS */
-.dt-btn-icon {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 5px;
-  border-radius: 6px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.15s;
-  margin: 2px;
-}
-
-.dt-btn-view {
-  color: #185FA5;
-}
-.dt-btn-view:hover {
-  background: #E6F1FB;
-}
-
-.dt-btn-edit {
-  color: #3B6D11;
-}
-.dt-btn-edit:hover {
-  background: #EAF3DE;
-}
-
-.dt-btn-delete {
-  color: #A32D2D;
-}
-.dt-btn-delete:hover {
-  background: #FCEBEB;
-}
-
-/* ===== SEARCH ===== */
-.dt-search {
-  width: 280px;
-  padding: 6px 10px;
-  margin-bottom: 12px;
-  border-radius: 6px;
-  border: 1px solid #ddd;
+  padding: 8px 18px;
+  border: none !important;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #EA6113, #F88F22) !important;
+  color: #fff !important;
   font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity .18s;
+  font-family: inherit;
+  box-shadow: 0 2px 8px rgba(248,143,34,0.28);
 }
 
-/* ===== TABLE ===== */
-.dt-table {
+.dt-btn:hover { opacity: .88; }
+
+.dt-btn-excel {
+  padding: 8px 16px;
+  border: none !important;
+  border-radius: 9px;
+  background: #16a34a !important;
+  color: #fff !important;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity .18s;
+  font-family: inherit;
+}
+
+.dt-btn-excel:hover { opacity: .85; }
+
+.dt-btn-pdf {
+  padding: 8px 16px;
+  border: none !important;
+  border-radius: 9px;
+  background: #dc2626 !important;
+  color: #fff !important;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity .18s;
+  font-family: inherit;
+}
+
+.dt-btn-pdf:hover { opacity: .85; }
+
+/* ─────────────────────────────────────────────────────────
+   5. SEARCH  (partagé)
+   ───────────────────────────────────────────────────────── */
+.dt-search-wrap {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.dt-search {
   width: 100%;
-  border-collapse: collapse;
-  background: white;
-  border-radius: 10px;
+  padding: 10px 14px 10px 38px;
+  border: 1.5px solid #f5dcc4 !important;
+  border-radius: 9px;
+  font-size: 13.5px;
+  background: #fdf8f3 !important;
+  color: #2d2013;
+  font-family: inherit;
+  transition: border .15s, box-shadow .15s;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.dt-search:focus {
+  border-color: #F88F22 !important;
+  background: #fff !important;
+  box-shadow: 0 0 0 3px rgba(248,143,34,0.18) !important;
+}
+
+/* ─────────────────────────────────────────────────────────
+   6. TABLE CARD  (partagé)
+   ───────────────────────────────────────────────────────── */
+.dt-table-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #f0e0cc;
+  box-shadow:
+    0 4px 6px rgba(234,97,19,.05),
+    0 10px 28px rgba(0,0,0,.08);
   overflow: hidden;
 }
 
+.dt-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 13.5px;
+}
+
+/* Header gradient */
+.dt-table thead tr {
+  background: linear-gradient(135deg, #EA6113 0%, #F88F22 100%);
+}
+
 .dt-table th {
-  background: #ff7a18;
-  color: white;
-  padding: 10px;
+  padding: 13px 16px !important;
+  text-align: left !important;
+  font-weight: 600 !important;
+  font-size: 11.5px !important;
+  color: #fff !important;
+  text-transform: uppercase !important;
+  letter-spacing: .5px;
+  white-space: nowrap;
+  border: none !important;
+  background: transparent !important;
   cursor: pointer;
+  user-select: none;
+  transition: opacity .15s;
 }
 
+.dt-table th:hover { opacity: .85; }
+
+/* Rows */
 .dt-table td {
-  padding: 10px;
-  border-bottom: 1px solid #eee;
+  padding: 11px 16px !important;
+  border-bottom: 1px solid #faf0e8 !important;
+  color: #2d2013 !important;
+  vertical-align: middle !important;
+  background: #fff !important;
+  transition: background .13s;
 }
 
-.dt-table tr:hover {
-  background: #f9f9f9;
+.dt-table tbody tr:last-child td { border-bottom: none !important; }
+.dt-table tbody tr:hover td { background: #fff9f3 !important; }
+.dt-table tbody tr:nth-child(even) td { background: #fdfaf7 !important; }
+.dt-table tbody tr:nth-child(even):hover td { background: #fff6ee !important; }
+
+.dt-actions-cell { text-align: center !important; white-space: nowrap; }
+
+.dt-empty {
+  text-align: center !important;
+  padding: 40px !important;
+  color: #c4a882 !important;
+  font-style: italic;
+  font-size: 13px !important;
 }
 
-/* ACTION CELL */
-.dt-actions-cell {
-  text-align: center;
+/* ─────────────────────────────────────────────────────────
+   7. ICON BUTTONS  (partagé)
+   ───────────────────────────────────────────────────────── */
+.dt-btn-icon {
+  border: none !important;
+  padding: 6px !important;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  transition: opacity .18s, transform .12s, box-shadow .15s;
+  margin: 0 2px;
 }
 
-/* ===== LAYOUT ===== */
-.dt-layout {
-  display: flex;
-  gap: 20px;
-  align-items: flex-start;
+.dt-btn-icon:hover {
+  opacity: .85;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0,0,0,.09);
 }
 
-.dt-left {
-  width: 30%;
-  min-height: 100vh;
-}
+.dt-btn-view   { background: #fff0e6 !important; color: #EA6113 !important; }
+.dt-btn-edit   { background: #fff4d6 !important; color: #92620a !important; }
+.dt-btn-delete { background: #fee2e2 !important; color: #b91c1c !important; }
 
-.dt-right {
-  width: 70%;
-}
-
-.user-form {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-}
-
-/* ===== PAGINATION ===== */
+/* ─────────────────────────────────────────────────────────
+   8. PAGINATION  (partagé)
+   ───────────────────────────────────────────────────────── */
 .dt-pagination {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-top: 1rem;
+  gap: 5px;
+  padding: 14px 16px;
   justify-content: flex-end;
   flex-wrap: wrap;
+  border-top: 1px solid #faf0e8;
 }
 
 .dt-pg-info {
   font-size: 12px;
-  color: #888;
+  color: #bbb;
   margin-right: 8px;
+  background: #fdf5ec;
+  padding: 4px 12px;
+  border-radius: 99px;
 }
 
 .dt-pg-btn {
-  min-width: 30px;
-  height: 30px;
-  padding: 0 6px;
-  display: flex;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 7px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  background: transparent;
+  border: 1.5px solid #f5dcc4 !important;
+  border-radius: 8px;
+  background: #fff !important;
+  color: #2d2013 !important;
   cursor: pointer;
   font-size: 13px;
-  transition: background 0.15s;
+  font-family: inherit;
+  transition: background .15s, border-color .15s;
 }
 
 .dt-pg-btn:hover:not(:disabled) {
-  background: #f5f5f5;
+  background: #fdf5ec !important;
+  border-color: #F88F22 !important;
 }
 
 .dt-pg-btn.active {
-  background: #ff7a18;
-  color: white;
-  font-weight: 500;
-  border-color: #ff7a18;
+  background: linear-gradient(135deg, #EA6113, #F88F22) !important;
+  color: #fff !important;
+  font-weight: 600;
+  border-color: transparent !important;
+  box-shadow: 0 2px 8px rgba(248,143,34,0.30);
 }
 
-.dt-pg-btn:disabled {
-  opacity: 0.35;
-  cursor: default;
-}
+.dt-pg-btn:disabled { opacity: .35; cursor: default; }
 
-.dt-pg-ellipsis {
-  font-size: 13px;
-  color: #888;
-  padding: 0 4px;
-}
-
-.dt-empty {
-  text-align: center;
-  padding: 2rem;
-  color: #aaa;
-  font-size: 14px;
-}
-/* ===== BOUTONS EXCEL / PDF ===== */
-.dt-btn-excel {
-  margin-left: 8px;
-  padding: 7px 12px;
-  border: none;
-  border-radius: 6px;
-  background: #1e7e34;
-  color: white;
-  cursor: pointer;
-}
-
-.dt-btn-excel:hover {
-  background: #155724;
-}
-
-.dt-btn-pdf {
-  margin-left: 8px;
-  padding: 7px 12px;
-  border: none;
-  border-radius: 6px;
-  background: #c0392b;
-  color: white;
-  cursor: pointer;
-}
-
-.dt-btn-pdf:hover {
-  background: #922b21;
-}
+.dt-pg-ellipsis { font-size: 13px; color: #c4a882; padding: 0 3px; }

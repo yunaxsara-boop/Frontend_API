@@ -1,0 +1,325 @@
+/* ════════════════════════════════════════════════════════
+   DataTable3.css — Sunset palette
+   #EA6113  #F88F22  #FBB931  #FFE3B3
+   Préfixe isolé : dt3-
+════════════════════════════════════════════════════════ */
+
+.dt3-page {
+  padding: 28px 32px;
+  background: #f4f0ea;
+  min-height: 100vh;
+  font-family: "DM Sans", "Segoe UI", sans-serif;
+  box-sizing: border-box;
+}
+
+/* ── HEADER ─────────────────────────────────────────────── */
+.dt3-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.dt3-title-block { display: flex; align-items: center; gap: 14px; }
+
+.dt3-icon-box {
+  width: 48px; height: 48px;
+  background: linear-gradient(135deg, #EA6113, #F88F22);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 22px;
+  box-shadow: 0 4px 14px rgba(234,97,19,.35);
+}
+
+.dt3-title-block h1 {
+  font-size: 21px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0;
+}
+
+.dt3-title-block p {
+  font-size: 13px;
+  color: #a0826d;
+  margin: 3px 0 0;
+}
+
+/* ── EXPORT BUTTONS ─────────────────────────────────────── */
+.dt3-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.dt3-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: 9px; border: none !important;
+  cursor: pointer; font-size: 13px; font-weight: 600;
+  font-family: inherit;
+  transition: opacity .18s;
+}
+
+.dt3-btn:hover { opacity: .85; }
+.dt3-btn-pdf   { background: #fee2e2 !important; color: #b91c1c !important; }
+.dt3-btn-excel { background: #dcfce7 !important; color: #15803d !important; }
+.dt3-btn-dl    { background: #fff0e6 !important; color: #EA6113 !important; }
+
+/* ── STAT CARDS ─────────────────────────────────────────── */
+.dt3-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.dt3-stat {
+  background: #fff;
+  border-radius: 14px;
+  padding: 16px 18px;
+  box-shadow: 0 2px 10px rgba(234,97,19,.06);
+  border: 1px solid #f0e0cc;
+  border-left: 4px solid #F88F22;
+  position: relative;
+  overflow: hidden;
+}
+
+.dt3-stat::after {
+  content: "";
+  position: absolute;
+  bottom: -14px; right: -14px;
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #F88F22, #FBB931);
+  opacity: .08;
+}
+
+.dt3-stat.green  { border-left-color: #22c55e; }
+.dt3-stat.yellow { border-left-color: #FBB931; }
+.dt3-stat.red    { border-left-color: #ef4444; }
+.dt3-stat.blue   { border-left-color: #3b82f6; }
+.dt3-stat.purple { border-left-color: #a855f7; }
+
+.dt3-stat-lbl {
+  font-size: 11px;
+  color: #a0826d;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  font-weight: 600;
+}
+
+.dt3-stat-val {
+  font-size: 26px;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin-top: 4px;
+  line-height: 1;
+}
+
+/* ── CARD ───────────────────────────────────────────────── */
+.dt3-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow:
+    0 4px 6px rgba(234,97,19,.05),
+    0 10px 28px rgba(0,0,0,.08);
+  overflow: hidden;
+  border: 1px solid #f0e0cc;
+}
+
+/* ── TOOLBAR ────────────────────────────────────────────── */
+.dt3-toolbar {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid #faf0e8;
+  flex-wrap: wrap; gap: 10px;
+}
+
+.dt3-toolbar-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+/* Search */
+.dt3-search-wrap {
+  position: relative !important;
+  display: flex;
+  align-items: center;
+}
+
+.dt3-search-wrap > div {
+  position: absolute;
+  left: 10px; top: 0; bottom: 0;
+  display: flex; align-items: center;
+  pointer-events: none;
+  color: #F88F22;
+  z-index: 1;
+}
+
+.dt3-search {
+  padding: 8px 12px 8px 36px !important;
+  border: 1.5px solid #f5dcc4 !important;
+  border-radius: 9px;
+  font-size: 13px;
+  width: 220px;
+  outline: none !important;
+  color: #2d2013;
+  background: #fdf8f3 !important;
+  font-family: inherit;
+  transition: border-color .18s, box-shadow .18s;
+}
+
+.dt3-search:focus {
+  border-color: #F88F22 !important;
+  background: #fff !important;
+  box-shadow: 0 0 0 3px rgba(248,143,34,0.18) !important;
+}
+
+/* Select */
+.dt3-select {
+  padding: 8px 12px;
+  border: 1.5px solid #f5dcc4 !important;
+  border-radius: 9px;
+  font-size: 13px;
+  background: #fdf8f3 !important;
+  color: #2d2013;
+  outline: none !important;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color .18s;
+}
+
+.dt3-select:focus { border-color: #F88F22 !important; }
+
+.dt3-count {
+  font-size: 12px;
+  color: #bbb;
+  white-space: nowrap;
+  background: #fdf5ec;
+  padding: 5px 12px;
+  border-radius: 99px;
+  font-weight: 500;
+}
+
+/* ── TABLE ──────────────────────────────────────────────── */
+.dt3-table-wrap { overflow-x: auto; }
+
+table.dt3-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 13.5px;
+}
+
+.dt3-table thead tr {
+  background: linear-gradient(135deg, #EA6113 0%, #F88F22 100%);
+}
+
+.dt3-table th {
+  padding: 12px 16px !important;
+  text-align: left !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: .5px;
+  color: #fff !important;
+  border: none !important;
+  background: transparent !important;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.dt3-table th.sort { cursor: pointer; transition: opacity .15s; }
+.dt3-table th.sort:hover { opacity: .80; }
+
+.dt3-sort { margin-left: 4px; opacity: .5; vertical-align: middle; }
+.dt3-sort.on { opacity: 1; color: #FBB931; }
+
+.dt3-table td {
+  padding: 11px 16px !important;
+  border-bottom: 1px solid #faf0e8 !important;
+  color: #2d2013 !important;
+  vertical-align: middle !important;
+  background: #fff !important;
+  transition: background .13s;
+}
+
+.dt3-table tbody tr:hover td { background: #fff9f3 !important; }
+.dt3-table tbody tr:nth-child(even) td { background: #fdfaf7 !important; }
+.dt3-table tbody tr:nth-child(even):hover td { background: #fff6ee !important; }
+.dt3-table tbody tr:last-child td { border-bottom: none !important; }
+
+.dt3-ref   { color: #EA6113 !important; font-weight: 700; font-size: 12px; }
+.dt3-muted { color: #c4a882 !important; }
+
+/* ── EMPTY ──────────────────────────────────────────────── */
+.dt3-empty {
+  text-align: center !important;
+  padding: 52px !important;
+  color: #c4a882 !important;
+  font-size: 14px !important;
+}
+
+/* ── BADGES ─────────────────────────────────────────────── */
+.dt3-badge {
+  display: inline-flex; align-items: center;
+  padding: 3px 10px; border-radius: 99px;
+  font-size: 11.5px; font-weight: 600; white-space: nowrap;
+}
+
+.b-green  { background: #dcfce7 !important; color: #15803d !important; }
+.b-yellow { background: #fff4d6 !important; color: #92620a !important; }
+.b-red    { background: #fee2e2 !important; color: #b91c1c !important; }
+.b-blue   { background: #dbeafe !important; color: #1e40af !important; }
+.b-gray   { background: #f4f4f5 !important; color: #52525b !important; }
+.b-orange { background: #fff0e6 !important; color: #EA6113 !important; }
+.b-purple { background: #f3e8ff !important; color: #7e22ce !important; }
+
+/* ── PAGINATION ─────────────────────────────────────────── */
+.dt3-pagination {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 13px 18px;
+  border-top: 1px solid #faf0e8;
+  flex-wrap: wrap; gap: 10px;
+  font-size: 13px; color: #a0826d;
+}
+
+.dt3-per-page { display: flex; align-items: center; gap: 7px; }
+
+.dt3-per-page select {
+  padding: 4px 8px;
+  border: 1.5px solid #f5dcc4 !important;
+  border-radius: 6px;
+  font-size: 13px;
+  outline: none;
+  cursor: pointer;
+  background: #fdf8f3;
+  color: #2d2013;
+}
+
+.dt3-pages { display: flex; align-items: center; gap: 4px; }
+
+.dt3-pb {
+  width: 32px; height: 32px;
+  border: 1.5px solid #f5dcc4 !important;
+  border-radius: 8px;
+  background: #fff !important;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  color: #2d2013 !important;
+  transition: all .15s;
+  font-family: inherit;
+}
+
+.dt3-pb:hover:not(:disabled) {
+  border-color: #F88F22 !important;
+  background: #fdf5ec !important;
+  color: #EA6113 !important;
+}
+
+.dt3-pb.active {
+  background: linear-gradient(135deg, #EA6113, #F88F22) !important;
+  color: #fff !important;
+  border-color: transparent !important;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(248,143,34,0.30);
+}
+
+.dt3-pb:disabled { opacity: .35; cursor: default; }

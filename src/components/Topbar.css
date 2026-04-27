@@ -1,19 +1,15 @@
+/* ── TOPBAR ─────────────────────────────────────── */
 .topbar {
   height: 60px;
   background: #ffffff;
-
-  /* coins moins pointus */
   border-radius: 12px;
-
   position: sticky;
   top: 10px;
   margin: 10px 10px 0 10px;
-
   box-shadow: 0 4px 15px rgba(0,0,0,0.05);
   z-index: 999;
 }
 
-/* CONTAINER */
 .topbarConteneur {
   height: 100%;
   padding: 0 20px;
@@ -28,17 +24,8 @@
   align-items: center;
   gap: 15px;
 }
-
-.menuIcon {
-  color: #ff7a00;
-  cursor: pointer;
-}
-
-.logo {
-  font-weight: 600;
-  font-size: 18px;
-  color: #333;
-}
+.menuIcon { color: #ff7a00; cursor: pointer; }
+.logo { font-weight: 600; font-size: 18px; color: #333; }
 
 /* RIGHT */
 .topright {
@@ -56,7 +43,6 @@
   border-radius: 10px;
   gap: 6px;
 }
-
 .searchContainer input {
   border: none;
   outline: none;
@@ -64,18 +50,227 @@
   font-size: 13px;
 }
 
-/* ICONS */
+/* ── CLOCHE ─────────────────────────────────────── */
+.notifWrapper {
+  position: relative;
+}
+
 .topbarIconsContainer {
   position: relative;
   cursor: pointer;
   color: #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  transition: background 0.2s, color 0.2s;
 }
-
-.topbarIconsContainer:hover {
+.topbarIconsContainer:hover,
+.topbarIconsContainer.active {
+  background: #fff3e0;
   color: #ff7a00;
 }
 
-/* USER */
+/* Badge rouge */
+.topiconBag {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #ef5350;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 2px solid #fff;
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes popIn {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+/* ── PANEL ──────────────────────────────────────── */
+.notifPanel {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 360px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.14);
+  border: 1px solid #f0f0f0;
+  overflow: hidden;
+  animation: slideDown 0.2s ease;
+  z-index: 9999;
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Header */
+.notifPanelHeader {
+  padding: 16px 18px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #f5f5f5;
+}
+.notifPanelTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.notifPanelTitle > span:first-child {
+  font-weight: 700;
+  font-size: 15px;
+  color: #1a1a1a;
+}
+.notifBadgeCount {
+  background: #ff7a18;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+.markAllBtn {
+  background: none;
+  border: 1px solid #ff7a18;
+  color: #ff7a18;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.markAllBtn:hover {
+  background: #ff7a18;
+  color: #fff;
+}
+
+/* Liste */
+.notifList {
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 6px 0;
+}
+.notifList::-webkit-scrollbar { width: 4px; }
+.notifList::-webkit-scrollbar-thumb { background: #eee; border-radius: 4px; }
+
+/* Empty */
+.notifEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 36px 20px;
+  color: #aaa;
+  gap: 8px;
+}
+.notifEmptyIcon { font-size: 32px; }
+.notifEmpty p { font-size: 13px; margin: 0; }
+
+/* Item */
+.notifItem {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 18px 12px 22px;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-bottom: 1px solid #fafafa;
+}
+.notifItem:last-child { border-bottom: none; }
+.notifItem.unread { background: #fffbf7; }
+.notifItem:hover { background: #f9f9f9; }
+
+/* Point orange non-lu */
+.unreadDot {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  background: #ff7a18;
+  border-radius: 50%;
+}
+
+/* Icône colorée */
+.notifIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+/* Texte */
+.notifContent { flex: 1; min-width: 0; }
+.notifTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.notifMessage {
+  font-size: 12px;
+  color: #666;
+  margin: 0 0 4px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.notifTime {
+  font-size: 11px;
+  color: #aaa;
+  margin: 0;
+}
+
+/* Flèche */
+.notifArrow {
+  font-size: 22px;
+  font-weight: 600;
+  align-self: center;
+  flex-shrink: 0;
+  opacity: 0.5;
+  transition: opacity 0.15s, transform 0.15s;
+}
+.notifItem:hover .notifArrow {
+  opacity: 1;
+  transform: translateX(3px);
+}
+
+/* Footer */
+.notifPanelFooter {
+  padding: 10px 18px;
+  border-top: 1px solid #f5f5f5;
+  text-align: center;
+  font-size: 12px;
+  color: #aaa;
+  background: #fafafa;
+}
+
+/* ── USER ───────────────────────────────────────── */
 .userContainer {
   display: flex;
   align-items: center;
@@ -84,7 +279,7 @@
   padding: 5px 10px;
   border-radius: 10px;
 }
-
-.userContainer:hover {
-  background: #f5f5f5;
-}
+.userContainer:hover { background: #f5f5f5; }
+.userInfo { display: flex; flex-direction: column; }
+.username { font-size: 13px; font-weight: 600; color: #333; }
+.userRole { font-size: 11px; color: #aaa; text-transform: capitalize; }

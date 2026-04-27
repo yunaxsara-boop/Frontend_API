@@ -8,7 +8,8 @@ export default function RespBrevets() {
 
   return (
     <DataTable
-      title="Liste des brevets"
+      title="Gestion des brevets"
+      
       data={brevets}
       columns={[
         { key: "num_brevet",    label: "N° Brevet" },

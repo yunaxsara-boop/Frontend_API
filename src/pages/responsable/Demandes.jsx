@@ -1,6 +1,16 @@
 import { useState, useEffect } from "react";
 import "./Demandes.css";
 
+import SearchIcon      from "@mui/icons-material/Search";
+import EditIcon        from "@mui/icons-material/Edit";
+import PrintIcon       from "@mui/icons-material/Print";
+import DownloadIcon    from "@mui/icons-material/Download";
+import DeleteIcon      from "@mui/icons-material/Delete";
+import VisibilityIcon  from "@mui/icons-material/Visibility";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon      from "@mui/icons-material/Cancel";
+import RefreshIcon     from "@mui/icons-material/Refresh";
+
 const KEY_RESP  = "resp_demandes";
 const KEY_AGENT = "agent_demandes";
 const loadResp  = () => JSON.parse(localStorage.getItem(KEY_RESP)  || "[]");
@@ -52,31 +62,23 @@ function buildAndOpen(demande, mode) {
 
   const html=`<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"/><title>Demande INAPI</title><style>${css}</style></head><body>
 <div class="tb"><span style="font-size:14px;font-weight:700">📄 Formulaire INAPI — R2-FO-03</span><button onclick="window.print()">🖨&nbsp; Imprimer / Enregistrer PDF</button></div>
-<div class="pg">
-  <div class="rf">R2-FO-03<br/>E1</div>
-  <table class="hdr"><tr>
-    <td class="hl"><div class="ar">المعهد الوطني الجزائري للملكية الصناعية</div><div class="ins">INSTITUT NATIONAL ALGÉRIEN</div><div class="ins">DE LA PROPRIÉTÉ INDUSTRIELLE</div></td>
-    <td class="hm"><div class="lg"><span class="lgi">in</span>&thinsp;pi</div><div style="font-size:6pt;margin-top:3px;font-family:Arial,sans-serif">Institut National Algérien de la Propriété Industrielle</div></td>
-    <td class="hr"><div class="ar">الجمهورية الجزائرية الديمقراطية الشعبية</div><div class="ins">RÉPUBLIQUE ALGÉRIENNE</div><div class="ins">DÉMOCRATIQUE ET POPULAIRE</div></td>
-  </tr></table>
-  <div class="nt"><div class="ntt">Nature de la demande de protection *</div><table class="ntr"><tr><td>Brevet d'invention <span class="ck">${nB}</span></td><td style="text-align:center">Extension de la demande<br/>internationale selon le PCT <span class="ck">${nP}</span></td><td style="text-align:right">Certificat d'addition <span class="ck">${nC}</span></td></tr></table></div>
-  <div class="fb"><div class="ft">[71] - DÉPOSANT(S) : <em>Nom, Prénom [dénomination], et Adresse complète</em></div><div class="fv" style="min-height:58px">${dep1}${dep2}${dep3}</div><div class="ff">Nationalité du ou des déposants : ${depNat}</div></div>
-  <div class="fb"><div class="ft">[72] - INVENTEUR(S) : <em>Nom, Prénom, Adresse</em></div><div class="fv" style="min-height:58px">${inv1}${inv2}</div></div>
-  <div class="fb"><div class="ft">[54] - TITRE DE L'INVENTION :</div><div class="fv" style="min-height:42px">${titre}</div></div>
-  <div class="pb"><div class="ft">[30] – REVENDICATION DE PRIORITÉ (S)</div><table class="pt"><thead><tr><th>[31] - N°(s) de dépôt</th><th>[32] - date(s)</th><th>[33] - pays d'origine</th><th>Nature de la demande</th></tr></thead><tbody><tr><td>&nbsp;</td><td></td><td></td><td></td></tr><tr><td>&nbsp;</td><td></td><td></td><td></td></tr><tr><td>&nbsp;</td><td></td><td></td><td></td></tr></tbody></table></div>
-  <div class="bt"><div class="bl"><table class="dt"><thead><tr><th>Numéro de dépôt</th><th>Date de dépôt</th><th>Heure</th></tr></thead><tbody><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><div class="di">N° de la demande internationale et date internationale de dépôt</div></div><div class="vs"><div class="vsl">Visa</div></div></div>
+<div class="pg"><div class="rf">R2-FO-03<br/>E1</div>
+<table class="hdr"><tr><td class="hl"><div class="ar">المعهد الوطني الجزائري للملكية الصناعية</div><div class="ins">INSTITUT NATIONAL ALGÉRIEN</div><div class="ins">DE LA PROPRIÉTÉ INDUSTRIELLE</div></td><td class="hm"><div class="lg"><span class="lgi">in</span>&thinsp;pi</div></td><td class="hr"><div class="ar">الجمهورية الجزائرية الديمقراطية الشعبية</div><div class="ins">RÉPUBLIQUE ALGÉRIENNE</div><div class="ins">DÉMOCRATIQUE ET POPULAIRE</div></td></tr></table>
+<div class="nt"><div class="ntt">Nature de la demande de protection *</div><table class="ntr"><tr><td>Brevet d'invention <span class="ck">${nB}</span></td><td style="text-align:center">Extension PCT <span class="ck">${nP}</span></td><td style="text-align:right">Certificat d'addition <span class="ck">${nC}</span></td></tr></table></div>
+<div class="fb"><div class="ft">[71] - DÉPOSANT(S)</div><div class="fv" style="min-height:58px">${dep1}${dep2}${dep3}</div><div class="ff">Nationalité : ${depNat}</div></div>
+<div class="fb"><div class="ft">[72] - INVENTEUR(S)</div><div class="fv" style="min-height:58px">${inv1}${inv2}</div></div>
+<div class="fb"><div class="ft">[54] - TITRE DE L'INVENTION</div><div class="fv" style="min-height:42px">${titre}</div></div>
+<div class="pb"><div class="ft">[30] – REVENDICATION DE PRIORITÉ</div><table class="pt"><thead><tr><th>[31] N° dépôt</th><th>[32] Date</th><th>[33] Pays</th><th>Nature</th></tr></thead><tbody><tr><td>&nbsp;</td><td></td><td></td><td></td></tr><tr><td>&nbsp;</td><td></td><td></td><td></td></tr></tbody></table></div>
+<div class="bt"><div class="bl"><table class="dt"><thead><tr><th>Numéro de dépôt</th><th>Date de dépôt</th><th>Heure</th></tr></thead><tbody><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><div class="di">N° demande internationale</div></div><div class="vs"><div class="vsl">Visa</div></div></div>
 </div>
 <div class="pg">
-  <div class="p2h"><div class="p2l">S</div><div class="p2n">N° ________ /DG</div><div class="p2m">Classement : 0.003.5/20<br/>Référence&nbsp;: E-063<br/>Page&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 3 de 3</div></div>
-  <div class="ct">Demande de certificat d'addition rattachée au brevet principal n°&nbsp;<span class="ul">${bretNum}</span>&nbsp;&nbsp; du &nbsp;<span class="ul">${bretDate}</span></div>
-  <div class="mw"><div class="ml"><div class="ft">[74] - MANDATAIRE : <em>Nom, Prénom, Adresse</em></div><div class="fv">${mand1}${mand2}</div></div><div class="mr">Date du pouvoir :<br/>${mandDate}</div></div>
-  <table class="rt"><tr><td style="width:30%">Le préposé à la réception</td><td style="width:35%">Fait à :&nbsp;&nbsp;&nbsp;&nbsp; le :</td><td style="width:35%;font-style:italic;font-size:8.5pt;line-height:1.6">Signature et cachet<br/><small>Qualité du signataire<br/>pour les personnes morales</small></td></tr></table>
-  <div class="ab"><div class="al">Autres informations</div><div class="av">${autresInfo}</div></div>
-  <div class="brd"><div class="brt">BORDEREAU DES PIÈCES DÉPOSÉES *</div><div class="brc"><div><p>${pCI} Copie de la demande internationale</p><p>${pMN} Mémoire descriptif en langue nationale</p><p>${pMF} Mémoire descriptif original en langue française&nbsp;Planche(s)</p><p>${pMFD} Mémoire descriptif duplicata en langue française&nbsp;Planche(s)</p><p>${pDO} Dessin(s) original (aux)&nbsp;Planche(s)</p><p>${pDD} Dessin(s) duplicata (aux)&nbsp;Planche(s)</p></div><div><p>${pAB} Abrégé descriptif</p><p>${pPO} Pouvoir</p><p>${pPR} Document de priorité</p><p>${pCS} Cession de priorité</p><p>${pTI} Titre ou justification du paiement de taxes</p></div></div></div>
-  <p class="ftx">Les demandes doivent être remises ou adressées par pli postal recommandé avec demande d'avis de réception, à l'Institut National Algérien de la Propriété Industrielle (INAPI) dont les coordonnées sont indiquées ci-dessous.</p>
-  <p class="ftx">Le paiement des taxes exigibles peut être effectué soit directement auprès de la caisse de l'INAPI soit par virement bancaire au compte : BEA 12 Avenue AMIROUCHE, Alger : n° 00200012120326641801</p>
-  <div class="coo"><strong>Coordonnées de l'INAPI :</strong><br/>Adresse : 42, rue Larbi BEN MHIDI, 5ème étage, B.P. 403 Alger Gare<br/>Tél : (021) 73 55 74&nbsp;Fax : (021) 73 96 44 et (021) 73 55 81<br/>E-mail : brevet@inapi.dz, info@inapi.dz — Web : www.inapi.dz</div>
-  <div class="nop">A NE PAS PLIER</div><div class="ast">* Cocher les cases correspondantes</div>
+<div class="p2h"><div class="p2l">S</div><div class="p2n">N° ________ /DG</div><div class="p2m">Classement : 0.003.5/20<br/>Référence : E-063<br/>Page : 3 de 3</div></div>
+<div class="ct">Certificat d'addition — brevet n°&nbsp;<span class="ul">${bretNum}</span>&nbsp; du &nbsp;<span class="ul">${bretDate}</span></div>
+<div class="mw"><div class="ml"><div class="ft">[74] - MANDATAIRE</div><div class="fv">${mand1}${mand2}</div></div><div class="mr">Date du pouvoir :<br/>${mandDate}</div></div>
+<table class="rt"><tr><td style="width:30%">Le préposé à la réception</td><td style="width:35%">Fait à : le :</td><td style="width:35%;font-style:italic;font-size:8.5pt">Signature et cachet</td></tr></table>
+<div class="ab"><div class="al">Autres informations</div><div class="av">${autresInfo}</div></div>
+<div class="brd"><div class="brt">BORDEREAU DES PIÈCES DÉPOSÉES *</div><div class="brc"><div><p>${pCI} Copie demande internationale</p><p>${pMN} Mémoire national</p><p>${pMF} Mémoire français original</p><p>${pMFD} Mémoire français duplicata</p><p>${pDO} Dessins originaux</p><p>${pDD} Dessins duplicata</p></div><div><p>${pAB} Abrégé</p><p>${pPO} Pouvoir</p><p>${pPR} Document priorité</p><p>${pCS} Cession priorité</p><p>${pTI} Titre/paiement taxes</p></div></div></div>
+<div class="nop">A NE PAS PLIER</div><div class="ast">* Cocher les cases correspondantes</div>
 </div></body></html>`;
 
   const blob=new Blob([html],{type:"text/html;charset=utf-8"});
@@ -88,6 +90,7 @@ function buildAndOpen(demande, mode) {
   } else { window.open(url,"_blank"); }
 }
 
+/* ══════════════════════════════════════════════════════════ */
 export default function RespDemandes() {
   const [mesDemandes,   setMesDemandes]   = useState([]);
   const [agentDemandes, setAgentDemandes] = useState([]);
@@ -114,7 +117,7 @@ export default function RespDemandes() {
       const u=mesDemandes.map(d=>d.id!==editId?d:{...d,
         deposant:[form.deposant_nom,form.deposant_prenom].filter(Boolean).join(" ")||form.deposant_denomination||d.deposant,
         titre:form.titre||d.titre, nature:natureLbl, data:{...form}});
-      saveResp(u);setMesDemandes(u);
+      saveResp(u); setMesDemandes(u);
     } else {
       const nd={id:Date.now(),
         deposant:[form.deposant_nom,form.deposant_prenom].filter(Boolean).join(" ")||form.deposant_denomination||"—",
@@ -148,16 +151,23 @@ export default function RespDemandes() {
           <p className="dem-sub">Espace Responsable — INAPI</p>
         </div>
 
-        {/* ─── TABLE 1 : MES DEMANDES ─── */}
+        {/* ── MES DEMANDES ── */}
         <div className="dem-section-header">
           <div className="dem-section-label"><span className="section-dot blue"/>Mes demandes</div>
           <button className="dem-add-btn" onClick={openAdd}>+ Ajouter une demande</button>
         </div>
+
         <div className="dem-card">
           <div className="dem-toolbar">
-            <input className="dem-search" placeholder="🔍  Rechercher…" value={searchMes} onChange={e=>setSearchMes(e.target.value)}/>
+            <div className="dem-search-wrap">
+              <div style={{position:"absolute",left:11,top:0,bottom:0,display:"flex",alignItems:"center",pointerEvents:"none",color:"#F88F22",zIndex:1}}>
+                <SearchIcon sx={{fontSize:18}}/>
+              </div>
+              <input className="dem-search" placeholder="Rechercher…" value={searchMes} onChange={e=>setSearchMes(e.target.value)}/>
+            </div>
             <span className="dem-count">{filteredMes.length} demande(s)</span>
           </div>
+
           <div className="dem-table-wrap">
             <table className="dem-table">
               <thead><tr><th>Date</th><th>Déposant</th><th>Titre</th><th>Nature</th><th>Statut</th><th>Actions</th></tr></thead>
@@ -171,10 +181,10 @@ export default function RespDemandes() {
                       <td>{d.nature}</td>
                       <td><span className={badgeCls(d.statut)}>{d.statut}</span></td>
                       <td className="dem-actions">
-                        <button className="act-btn edit"  title="Modifier"    onClick={()=>openEdit(d)}>✏️</button>
-                        <button className="act-btn print" title="Imprimer"    onClick={()=>buildAndOpen(d,"print")}>🖨</button>
-                        <button className="act-btn dl"    title="Télécharger" onClick={()=>buildAndOpen(d,"download")}>⬇️</button>
-                        <button className="act-btn del"   title="Supprimer"   onClick={()=>handleDelete(d.id)}>🗑</button>
+                        <button className="act-btn edit"  title="Modifier"    onClick={()=>openEdit(d)}><EditIcon sx={{fontSize:17}}/></button>
+                        <button className="act-btn print" title="Imprimer"    onClick={()=>buildAndOpen(d,"print")}><PrintIcon sx={{fontSize:17}}/></button>
+                        <button className="act-btn dl"    title="Télécharger" onClick={()=>buildAndOpen(d,"download")}><DownloadIcon sx={{fontSize:17}}/></button>
+                        <button className="act-btn del"   title="Supprimer"   onClick={()=>handleDelete(d.id)}><DeleteIcon sx={{fontSize:17}}/></button>
                       </td>
                     </tr>
                   ))
@@ -184,16 +194,25 @@ export default function RespDemandes() {
           </div>
         </div>
 
-        {/* ─── TABLE 2 : DEMANDES DES AGENTS ─── */}
+        {/* ── DEMANDES DES AGENTS ── */}
         <div className="dem-section-header" style={{marginTop:32}}>
           <div className="dem-section-label"><span className="section-dot orange"/>Demandes des agents</div>
-          <button className="dem-refresh-btn" onClick={()=>setAgentDemandes(loadAgent())}>↻ Actualiser</button>
+          <button className="dem-refresh-btn" onClick={()=>setAgentDemandes(loadAgent())}>
+            <RefreshIcon sx={{fontSize:16,verticalAlign:"middle",mr:.5}}/> Actualiser
+          </button>
         </div>
+
         <div className="dem-card">
           <div className="dem-toolbar">
-            <input className="dem-search" placeholder="🔍  Rechercher…" value={searchAgent} onChange={e=>setSearchAgent(e.target.value)}/>
+            <div className="dem-search-wrap">
+              <div style={{position:"absolute",left:11,top:0,bottom:0,display:"flex",alignItems:"center",pointerEvents:"none",color:"#F88F22",zIndex:1}}>
+                <SearchIcon sx={{fontSize:18}}/>
+              </div>
+              <input className="dem-search" placeholder="Rechercher…" value={searchAgent} onChange={e=>setSearchAgent(e.target.value)}/>
+            </div>
             <span className="dem-count">{filteredAgent.length} demande(s)</span>
           </div>
+
           <div className="dem-table-wrap">
             <table className="dem-table">
               <thead><tr><th>Date</th><th>Agent</th><th>Déposant</th><th>Titre</th><th>Nature</th><th>Statut</th><th>Actions</th></tr></thead>
@@ -203,17 +222,17 @@ export default function RespDemandes() {
                   :filteredAgent.map(d=>(
                     <tr key={d.id}>
                       <td>{d.date}</td>
-                      <td><span className="agent-tag">👤 {d.agentNom||"Agent"}</span></td>
+                      <td><span className="agent-tag">{d.agentNom||"Agent"}</span></td>
                       <td>{d.deposant}</td>
                       <td className="dem-titre-cell">{d.titre}</td>
                       <td>{d.nature}</td>
                       <td><span className={badgeCls(d.statut)}>{d.statut}</span></td>
                       <td className="dem-actions">
-                        <button className="act-btn view"    title="Voir"        onClick={()=>setViewDemande(d)}>👁</button>
-                        <button className="act-btn print"   title="Imprimer"    onClick={()=>buildAndOpen(d,"print")}>🖨</button>
-                        <button className="act-btn dl"      title="Télécharger" onClick={()=>buildAndOpen(d,"download")}>⬇️</button>
-                        {d.statut!=="VALIDER"&&<button className="act-btn valider" title="Valider"  onClick={()=>changeStatut(d.id,"VALIDER")}>✅</button>}
-                        {d.statut!=="REFUSER"&&<button className="act-btn refuser" title="Refuser"  onClick={()=>changeStatut(d.id,"REFUSER")}>❌</button>}
+                        <button className="act-btn view"    title="Voir"        onClick={()=>setViewDemande(d)}><VisibilityIcon sx={{fontSize:17}}/></button>
+                        <button className="act-btn print"   title="Imprimer"    onClick={()=>buildAndOpen(d,"print")}><PrintIcon sx={{fontSize:17}}/></button>
+                        <button className="act-btn dl"      title="Télécharger" onClick={()=>buildAndOpen(d,"download")}><DownloadIcon sx={{fontSize:17}}/></button>
+                        {d.statut!=="VALIDER"&&<button className="act-btn valider" title="Valider"  onClick={()=>changeStatut(d.id,"VALIDER")}><CheckCircleIcon sx={{fontSize:17}}/></button>}
+                        {d.statut!=="REFUSER"&&<button className="act-btn refuser" title="Refuser"  onClick={()=>changeStatut(d.id,"REFUSER")}><CancelIcon sx={{fontSize:17}}/></button>}
                       </td>
                     </tr>
                   ))
@@ -224,7 +243,7 @@ export default function RespDemandes() {
         </div>
       </div>
 
-      {/* ─── MODAL AJOUT / MODIFICATION ─── */}
+      {/* ── MODAL AJOUT / MODIFICATION ── */}
       {showModal&&(
         <div className="dem-overlay" onClick={e=>e.target.classList.contains("dem-overlay")&&setShowModal(false)}>
           <div className="dem-modal">
@@ -293,13 +312,13 @@ export default function RespDemandes() {
             </div>
             <div className="modal-footer">
               <button className="btn-cancel" onClick={()=>setShowModal(false)}>Annuler</button>
-              <button className="btn-save"   onClick={handleSave}>{editId?"💾  Enregistrer les modifications":"✅  Enregistrer la demande"}</button>
+              <button className="btn-save"   onClick={handleSave}>{editId?"💾 Enregistrer les modifications":"✅ Enregistrer la demande"}</button>
             </div>
           </div>
         </div>
       )}
 
-      {/* ─── MODAL VUE (lecture seule) ─── */}
+      {/* ── MODAL VUE ── */}
       {viewDemande&&(
         <div className="dem-overlay" onClick={e=>e.target.classList.contains("dem-overlay")&&setViewDemande(null)}>
           <div className="dem-modal">
@@ -332,8 +351,8 @@ export default function RespDemandes() {
             </div>
             <div className="modal-footer">
               <button className="btn-cancel" onClick={()=>setViewDemande(null)}>Fermer</button>
-              <button className="btn-print"  onClick={()=>buildAndOpen(viewDemande,"print")}>🖨 Imprimer</button>
-              <button className="btn-dl"     onClick={()=>buildAndOpen(viewDemande,"download")}>⬇️ Télécharger</button>
+              <button className="btn-print"  onClick={()=>buildAndOpen(viewDemande,"print")}><PrintIcon sx={{fontSize:15,mr:.5}}/>Imprimer</button>
+              <button className="btn-dl"     onClick={()=>buildAndOpen(viewDemande,"download")}><DownloadIcon sx={{fontSize:15,mr:.5}}/>Télécharger</button>
             </div>
           </div>
         </div>

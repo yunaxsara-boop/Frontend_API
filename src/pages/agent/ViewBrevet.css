@@ -1,92 +1,154 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
 
-/* 🟠 VIEW BREVET - ORANGE MODERNE */
+.view-page {
+  min-height: 100vh;
+  background: #f4f0ea;
+  padding: 32px 24px;
+  font-family: "DM Sans", "Segoe UI", sans-serif;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
 
-.view-container {
+.view-card-wrapper {
+  width: 100%;
   max-width: 900px;
-  margin: 30px auto;
-  background: #ffffff;
-  padding: 30px;
-  border-radius: 14px;
-  font-family: "Segoe UI", sans-serif;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  border: 1px solid #f1f1f1;
+  background: #fff;
+  border-radius: 20px;
+  padding: 36px 40px;
+  box-shadow:
+    0 4px 6px rgba(234,97,19,.05),
+    0 12px 32px rgba(0,0,0,.08);
+  border: 1px solid #f0e0cc;
 }
 
-/* TITLE */
 .view-title {
-  font-size: 20px;
+  font-size: 19px;
   font-weight: 700;
-  color: #1f2937;
-  border-left: 5px solid #ff7a18;
-  padding-left: 12px;
-  margin-bottom: 20px;
+  color: #1a1a2e;
+  margin: 0 0 28px;
+  padding-left: 14px;
+  border-left: 4px solid;
+  border-image: linear-gradient(180deg, #EA6113, #FBB931) 1;
+  letter-spacing: -0.2px;
 }
 
-/* CARD INFO */
-.view-card {
-  background: linear-gradient(135deg, #fff7ed, #ffffff);
-  padding: 18px;
+/* ─── Info grid ──────────────────────────────────────────── */
+.view-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.view-info-item {
+  background: #fdf8f3;
+  border: 1.5px solid #f0ddd0;
   border-radius: 12px;
-  border: 1px solid #ffe0c2;
-  margin-bottom: 20px;
-  transition: 0.2s;
+  padding: 12px 16px;
 }
 
-.view-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(255, 122, 24, 0.08);
+.view-info-item.full-width {
+  grid-column: span 2;
 }
 
-.view-card p {
-  margin: 8px 0;
+.view-info-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  color: #a0826d;
+  margin-bottom: 4px;
+}
+
+.view-info-value {
   font-size: 14px;
-  color: #374151;
+  color: #2d2013;
+  font-weight: 500;
 }
 
-/* LABEL BOLD STYLE */
-.view-card b {
-  color: #111827;
-}
-
-/* DOCUMENTS TITLE */
-.view-docs h4 {
-  margin-bottom: 10px;
-  font-size: 15px;
-  color: #1f2937;
-}
-
-/* DOC ITEM */
-.view-doc-item {
-  background: #fff3e6;
-  color: #c2410c;
-  padding: 6px 10px;
-  margin-bottom: 6px;
-  border-radius: 8px;
+/* ─── Status badge ───────────────────────────────────────── */
+.view-status {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 20px;
   font-size: 12px;
-  list-style: none;
+  font-weight: 700;
+  letter-spacing: .4px;
+}
+
+.view-status.en-attente { background: #fff3e0; color: #e65100; border: 1px solid #ffcc80; }
+.view-status.accepter   { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+.view-status.refuser    { background: #fce4ec; color: #c62828; border: 1px solid #ef9a9a; }
+
+/* ─── Section label ──────────────────────────────────────── */
+.view-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  color: #EA6113;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.view-section-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, #f0ddd0, transparent);
+}
+
+/* ─── Docs ───────────────────────────────────────────────── */
+.view-docs-box {
+  border: 1.5px dashed #f0ddd0;
+  padding: 16px;
+  border-radius: 12px;
+  background: #fdf8f3;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.view-doc-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  background: #fff4e6;
+  padding: 7px 12px;
+  border-radius: 8px;
+  color: #EA6113;
   border: 1px solid #ffd7b3;
-  transition: 0.2s;
+  font-weight: 500;
+  list-style: none;
 }
 
-.view-doc-item:hover {
-  background: #ffe4cc;
+.view-doc-item::before { content: "📎"; font-size: 13px; }
+
+.view-no-docs {
+  font-size: 13px;
+  color: #c4a882;
+  text-align: center;
+  padding: 8px 0;
 }
 
-/* BACK BUTTON */
+/* ─── Back button ────────────────────────────────────────── */
 .view-btn-back {
-  margin-top: 20px;
-  padding: 10px 16px;
+  padding: 11px 24px;
   border: none;
-  background: #ff7a18;
-  color: white;
-  border-radius: 10px;
-  cursor: pointer;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #EA6113, #F88F22);
+  color: #fff;
+  font-size: 14px;
   font-weight: 600;
-  transition: 0.2s;
-  box-shadow: 0 4px 10px rgba(255, 122, 24, 0.2);
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity .18s, transform .15s;
+  box-shadow: 0 3px 12px rgba(248,143,34,0.35);
 }
 
-.view-btn-back:hover {
-  background: #e86a10;
-  transform: translateY(-1px);
-}
+.view-btn-back:hover { opacity: .9; transform: translateY(-1px); }

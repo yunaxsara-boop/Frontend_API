@@ -40,7 +40,7 @@ const MENUS = {
   directeur: [
     { to: "/directeur", icon: <DashboardIcon />, label: "Tableau de bord" },
     { to: "/directeur/brevets", icon: <DescriptionIcon />, label: "Brevets" },
-    { to: "/directeur/rapports", icon: <BarChartIcon />, label: "Rapports" },
+    { to: "/directeur/paiements", icon: <PaymentIcon />, label: "paiement" },
     { to: "/directeur/documents", icon: <DescriptionIcon />, label: "Documents" },
     { to: "/directeur/recours", icon: <GavelIcon />, label: "Recours" },
   ],

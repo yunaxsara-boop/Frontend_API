@@ -30,8 +30,10 @@ export default function ViewBrevet() {
   if (!data) return <p>Brevet Introuvable</p>;
 
   return (
-    <div className="view-container">
-  <h2 className="view-title">Détails Brevet</h2>
+    <div className="view-page">
+      <div className="view-container">
+
+        <h2 className="view-title">Détails du brevet</h2>
 
   <div className="view-card">
     <p><b>Num brevet:</b> {data.num_brevet}</p>
@@ -45,22 +47,25 @@ export default function ViewBrevet() {
     <p><b>Status:</b> {data.statut}</p>
   </div>
 
-  <div className="view-docs">
-    <h4>📎 Documents :</h4>
-    <ul>
-      {data.documents?.length > 0 ? (
-        data.documents.map((doc, i) => (
-          <li key={i} className="view-doc-item">{doc}</li>
-        ))
-      ) : (
-        <p>Aucun document</p>
-      )}
-    </ul>
-  </div>
+        {/* Documents */}
+        <div className="view-docs">
+          <p className="view-docs-title">📎 Documents joints</p>
+          {data.documents?.length > 0 ? (
+            <ul className="view-docs-list">
+              {data.documents.map((doc, i) => (
+                <li key={i} className="view-doc-item">{doc}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="view-no-doc">Aucun document joint</p>
+          )}
+        </div>
 
-  <button className="view-btn-back" onClick={() => navigate(-1)}>
-    ⬅ Retour
-  </button>
-</div>
+        <button className="view-btn-back" onClick={() => navigate(-1)}>
+          ← Retour
+        </button>
+
+      </div>
+    </div>
   );
 }

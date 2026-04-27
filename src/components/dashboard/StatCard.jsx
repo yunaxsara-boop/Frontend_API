@@ -1,14 +1,17 @@
-export default function StatCard({ icon, value, label, trend, trendUp, color }) {
+export default function StatCard({ value, label, trend, trendUp }) {
   return (
     <div className="stat-card">
-      <div className={`stat-icon ic-${color}`}>
-        {icon}
-      </div>
+      <span className="stat-accent-bar" />
       <div className="stat-info">
         <div className="stat-val">{value}</div>
         <div className="stat-label">{label}</div>
-        
+        {trend && (
+          <span className={`stat-trend ${trendUp ? "up" : "down"}`}>
+            {trendUp ? "▲" : "▼"} {trend}
+          </span>
+        )}
       </div>
+      <span className="stat-deco" />
     </div>
   );
 }

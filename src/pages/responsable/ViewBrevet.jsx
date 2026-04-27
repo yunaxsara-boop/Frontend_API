@@ -4,49 +4,80 @@ import { useRespBrevets } from "./RespBrevetsContext";
 import "../agent/viewBrevet.css";
 
 export default function RespViewBrevet() {
-  const { id } = useParams();
-  const navigate = useNavigate();
+  const { id }     = useParams();
+  const navigate   = useNavigate();
   const { getBrevetById } = useRespBrevets();
-  const [data, setData] = useState(null);
+  const [data, setData]   = useState(null);
 
-  useEffect(() => {
-    setData(getBrevetById(id));
-  }, [id]);
+  useEffect(() => { setData(getBrevetById(id)); }, [id]);
 
-  if (!data) return <p>Loading...</p>;
+  if (!data) return <p>Chargement...</p>;
+
+  const statusClass = {
+    EN_ATTENTE: "en-attente",
+    ACCEPTER:   "accepter",
+    REFUSER:    "refuser",
+  }[data.status] ?? "en-attente";
 
   return (
-    <div className="view-container">
-      <h2 className="view-title">Détails Brevet</h2>
+    <div className="view-page">
+      <div className="view-card-wrapper">
+        <h2 className="view-title">Détails du brevet</h2>
 
-      <div className="view-card">
-        <p><b>Num brevet:</b> {data.num_brevet}</p>
-        <p><b>Titre:</b> {data.titre}</p>
-        <p><b>Num dépôt:</b> {data.num_depo}</p>
-        <p><b>Date dépôt:</b> {data.date_depo}</p>
-        <p><b>Date sortie:</b> {data.date_sortie}</p>
-        <p><b>Titulaire:</b> {data.titulaire}</p>
-        <p><b>Inventeur:</b> {data.nom_inventeur}</p>
-        <p><b>Déposant:</b> {data.nom_deposant}</p>
-        <p><b>Status:</b> {data.status}</p>
-      </div>
+        <div className="view-info-grid">
+          <div className="view-info-item">
+            <div className="view-info-label">Num brevet</div>
+            <div className="view-info-value">{data.num_brevet}</div>
+          </div>
+          <div className="view-info-item">
+            <div className="view-info-label">Num dépôt</div>
+            <div className="view-info-value">{data.num_depo}</div>
+          </div>
+          <div className="view-info-item full-width">
+            <div className="view-info-label">Titre</div>
+            <div className="view-info-value">{data.titre}</div>
+          </div>
+          <div className="view-info-item">
+            <div className="view-info-label">Date dépôt</div>
+            <div className="view-info-value">{data.date_depo}</div>
+          </div>
+          <div className="view-info-item">
+            <div className="view-info-label">Date sortie</div>
+            <div className="view-info-value">{data.date_sortie}</div>
+          </div>
+          <div className="view-info-item">
+            <div className="view-info-label">Titulaire</div>
+            <div className="view-info-value">{data.titulaire}</div>
+          </div>
+          <div className="view-info-item">
+            <div className="view-info-label">Inventeur</div>
+            <div className="view-info-value">{data.nom_inventeur}</div>
+          </div>
+          <div className="view-info-item">
+            <div className="view-info-label">Déposant</div>
+            <div className="view-info-value">{data.nom_deposant}</div>
+          </div>
+          <div className="view-info-item">
+            <div className="view-info-label">Statut</div>
+            <span className={`view-status ${statusClass}`}>{data.status}</span>
+          </div>
+        </div>
 
-      <div className="view-docs">
-        <h4>📎 Documents :</h4>
-        <ul>
+        <div className="view-section-label">Documents</div>
+        <div className="view-docs-box">
           {data.documents?.length > 0 ? (
             data.documents.map((doc, i) => (
-              <li key={i} className="view-doc-item">{doc}</li>
+              <div key={i} className="view-doc-item">{doc}</div>
             ))
           ) : (
-            <p>Aucun document</p>
+            <p className="view-no-docs">Aucun document joint</p>
           )}
-        </ul>
-      </div>
+        </div>
 
-      <button className="view-btn-back" onClick={() => navigate(-1)}>
-        ⬅ Retour
-      </button>
+        <button className="view-btn-back" onClick={() => navigate(-1)}>
+          ← Retour
+        </button>
+      </div>
     </div>
   );
 }

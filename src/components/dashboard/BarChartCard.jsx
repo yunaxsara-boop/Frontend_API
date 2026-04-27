@@ -5,18 +5,33 @@ export default function BarChartCard({ title, labels, datasets, period, onPeriod
   const canvasRef = useRef(null);
   const chartRef  = useRef(null);
 
+  // Remap datasets to orange palette
+  const orangeDatasets = datasets.map((ds, i) => ({
+    ...ds,
+    backgroundColor: ds.backgroundColor ?? (i === 0 ? "#F88F22" : "#FFE3B3"),
+    hoverBackgroundColor: i === 0 ? "#EA6113" : "#FBB931",
+    borderRadius: ds.borderRadius ?? 8,
+    borderSkipped: false,
+  }));
+
   useEffect(() => {
     if (chartRef.current) chartRef.current.destroy();
     chartRef.current = new Chart(canvasRef.current, {
       type: "bar",
-      data: { labels, datasets },
+      data: { labels, datasets: orangeDatasets },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         plugins: { legend: { display: false } },
         scales: {
-          x: { grid: { display: false }, ticks: { font: { size: 11 }, color: "#aaa" } },
-          y: { grid: { color: "#f3f3f3" }, ticks: { font: { size: 11 }, color: "#aaa" } },
+          x: {
+            grid: { display: false },
+            ticks: { font: { size: 11 }, color: "#aaa" },
+          },
+          y: {
+            grid: { color: "#f3f3f3" },
+            ticks: { font: { size: 11 }, color: "#aaa" },
+          },
         },
       },
     });
@@ -32,7 +47,7 @@ export default function BarChartCard({ title, labels, datasets, period, onPeriod
             <button
               key={t}
               className={`dash-tab ${period === t ? "active" : ""}`}
-              onClick={() => onPeriodChange(t)}
+              onClick={() => onPeriodChange?.(t)}
             >
               {t}
             </button>
@@ -41,14 +56,15 @@ export default function BarChartCard({ title, labels, datasets, period, onPeriod
       </div>
 
       <div className="chart-legend">
-        <span className="legend-item">
-          <span className="legend-dot" style={{ background: "#ffe0c2" }} />
-          Agents
-        </span>
-        <span className="legend-item">
-          <span className="legend-dot" style={{ background: "#ff7a18" }} />
-          Directeurs
-        </span>
+        {datasets.map((ds, i) => (
+          <span key={i} className="legend-item">
+            <span
+              className="legend-dot"
+              style={{ background: ds.backgroundColor ?? (i === 0 ? "#F88F22" : "#FFE3B3") }}
+            />
+            {ds.label}
+          </span>
+        ))}
       </div>
 
       <div style={{ position: "relative", height: "200px" }}>

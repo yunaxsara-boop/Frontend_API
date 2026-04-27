@@ -1,127 +1,204 @@
-/* 🔵 INAPI STYLE - ADD BREVET */
-.form-container {
-  max-width: 1100px;
-  margin: 30px auto;
-  background: #ffffff;
-  padding: 40px;
-  border-radius: 12px;
-  font-family: "Segoe UI", sans-serif;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
-  border: 1px solid #e6e9ef;
+/* ═══════════════════════════════════════════════════════════
+   BREVET FORM  —  partagé AddBrevet + EditBrevet
+   Sunset palette  #EA6113  #F88F22  #FBB931  #FFE3B3
+   ═══════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
+/* ─── Page wrapper ───────────────────────────────────────── */
+.brevet-page {
+  min-height: 100vh;
+  background: #f4f0ea;
+  padding: 32px 24px;
+  font-family: "DM Sans", "Segoe UI", sans-serif;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
 }
 
-/* TITLE */
-.form-container h2 {
-  text-align: left;
-  margin-bottom: 25px;
-  font-size: 20px;
-  color: #1f2a37;
-  font-weight: 600;
-  border-left: 4px solid #1d4ed8;
-  padding-left: 10px;
+/* ─── Card ───────────────────────────────────────────────── */
+.brevet-card {
+  width: 100%;
+  max-width: 1000px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 36px 40px;
+  box-shadow:
+    0 4px 6px rgba(234,97,19,.05),
+    0 12px 32px rgba(0,0,0,.08);
+  border: 1px solid #f0e0cc;
 }
 
-/* GRID */
-.form-container .form-grid {
+/* ─── Title ──────────────────────────────────────────────── */
+.brevet-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 28px;
+  padding-left: 14px;
+  border-left: 4px solid;
+  border-image: linear-gradient(180deg, #EA6113, #FBB931) 1;
+  letter-spacing: -0.2px;
+}
+
+/* ─── Grid ───────────────────────────────────────────────── */
+.brevet-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 18px;
 }
 
-/* FORM GROUP */
-.form-container .form-group {
+/* ─── Form group ─────────────────────────────────────────── */
+.form-group {
   display: flex;
   flex-direction: column;
+  gap: 6px;
 }
 
-/* FULL WIDTH */
-.form-container .full-width {
+.form-group.full-width {
   grid-column: span 2;
 }
 
-/* LABEL */
-.form-container label {
+/* ─── Label ──────────────────────────────────────────────── */
+.form-group label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #a0826d;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+/* ─── Input / Select ─────────────────────────────────────── */
+.form-group input,
+.form-group select {
+  padding: 10px 13px;
+  border-radius: 10px;
+  border: 1.5px solid #f0ddd0 !important;
+  font-size: 13.5px;
+  background: #fdf8f3 !important;
+  color: #2d2013;
+  font-family: inherit;
+  transition: border .15s, box-shadow .15s, background .15s;
+  outline: none !important;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #F88F22 !important;
+  background: #fff !important;
+  box-shadow: 0 0 0 3px rgba(248,143,34,0.18) !important;
+}
+
+.form-group input::placeholder { color: #c4a882; }
+
+/* ─── File input ─────────────────────────────────────────── */
+.form-group input[type="file"] {
+  border: 1.5px dashed #f0ddd0 !important;
+  background: #fdf8f3 !important;
+  padding: 10px 12px;
+  cursor: pointer;
+  color: #a0826d;
+}
+
+.form-group input[type="file"]:hover {
+  border-color: #F88F22 !important;
+  background: #fff !important;
+}
+
+/* ─── Docs box ───────────────────────────────────────────── */
+.docs-box {
+  border: 1.5px dashed #f0ddd0;
+  padding: 16px;
+  border-radius: 12px;
+  background: #fdf8f3;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.docs-box input[type="file"] {
+  border: none !important;
+  background: transparent !important;
+  padding: 0;
+  font-size: 13px;
+  color: #a0826d;
+}
+
+/* ─── Doc item ───────────────────────────────────────────── */
+.doc-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 12px;
-  margin-bottom: 6px;
-  color: #374151;
+  background: #fff4e6;
+  padding: 7px 12px;
+  border-radius: 8px;
+  color: #EA6113;
+  border: 1px solid #ffd7b3;
   font-weight: 500;
 }
 
-/* INPUT + SELECT */
-.form-container input,
-.form-container select {
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid #d1d5db;
-  font-size: 14px;
-  background: #f9fafb;
-  transition: 0.2s;
+.doc-item::before {
+  content: "📎";
+  font-size: 13px;
 }
 
-/* FOCUS */
-.form-container input:focus,
-.form-container select:focus {
-  border-color: #1d4ed8;
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.15);
-  outline: none;
-}
-
-/* DOCUMENT BOX */
-.form-container .docs-box {
-  border: 1px dashed #cbd5e1;
-  padding: 15px;
-  border-radius: 10px;
-  background: #f8fafc;
-}
-
-/* DOC ITEM */
-.form-container .doc-item {
-  margin-top: 6px;
-  font-size: 12px;
-  background: #eef2ff;
-  padding: 6px 10px;
-  border-radius: 6px;
-  color: #1e3a8a;
-}
-
-/* ACTIONS */
-.form-container .form-actions {
-  margin-top: 30px;
+/* ─── Section divider ────────────────────────────────────── */
+.brevet-section-label {
+  grid-column: span 2;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  color: #EA6113;
   display: flex;
-  gap: 15px;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
 }
 
-/* SAVE BUTTON (PRIMARY BLUE INAPI STYLE) */
-.form-container .btn-save {
+.brevet-section-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, #f0ddd0, transparent);
+}
+
+/* ─── Actions ────────────────────────────────────────────── */
+.brevet-actions {
+  margin-top: 28px;
+  display: flex;
+  gap: 12px;
+}
+
+.btn-save {
   flex: 1;
   padding: 12px;
-  border: none;
-  border-radius: 8px;
-  background: #1d4ed8;
-  color: white;
+  border: none !important;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #EA6113, #F88F22) !important;
+  color: #fff !important;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: 0.2s;
+  transition: opacity .18s, transform .15s;
+  box-shadow: 0 3px 12px rgba(248,143,34,0.35);
+  font-family: inherit;
 }
 
-.form-container .btn-save:hover {
-  background: #1e40af;
-}
+.btn-save:hover { opacity: .9; transform: translateY(-1px); }
 
-/* CANCEL BUTTON */
-.form-container .btn-cancel {
+.btn-cancel {
   flex: 1;
   padding: 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  background: #fff;
-  color: #374151;
+  border: 1.5px solid #f0ddd0 !important;
+  border-radius: 11px;
+  background: #fff !important;
+  color: #6b7280 !important;
+  font-size: 14px;
   cursor: pointer;
-  transition: 0.2s;
+  font-family: inherit;
+  transition: background .15s;
 }
 
-.form-container .btn-cancel:hover {
-  background: #f3f4f6;
-}
-
+.btn-cancel:hover { background: #fdf5ec !important; }

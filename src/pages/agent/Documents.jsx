@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import Datatable2 from "../../components/Datatable2";
 import DocumentForm from "./DocumentForm";
+import DownloadIcon from "@mui/icons-material/Download";
+import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
 import "./documents.css";
 import { getDocuments, deleteDocument, addDocument, updateDocument } from "../../features/documents/documentApi";
 import { useNavigate } from "react-router-dom";
@@ -95,7 +97,6 @@ export default function AgentDocuments() {
       {viewDoc && (
         <ViewDocumentModal
           doc={viewDoc}
-          allDocuments={data}        
           onClose={() => setViewDoc(null)}
         />
       )}
@@ -126,57 +127,63 @@ function ViewDocumentModal({ doc, allDocuments, onClose }) {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-box" onClick={(e) => e.stopPropagation()}>
+
         <div className="modal-header">
-          <h3>Documents liés — {doc.brevet_lie}</h3>
+          <h3>Détails du document</h3>
           <button className="modal-close" onClick={onClose}>✕</button>
         </div>
 
         <div className="modal-body">
-          <table className="modal-table">
-            <thead>
-              <tr>
-                <th>Nom</th>
-                <th>Type</th>
-                <th>Catégorie</th>
-                <th>Description</th>
-                <th>Date</th>
-                <th>Télécharger</th>
-              </tr>
-            </thead>
-            <tbody>
-              {docsLies.map((d) => (
-                <tr key={d.id}>
-                  <td>{d.nom_document}</td>
-                  <td>{d.type_document}</td>
-                  <td>
-                    <span className={`cat-badge cat-${d.categorie}`}>
-                      {d.categorie}
-                    </span>
-                  </td>
-                  <td>{d.description}</td>
-                  <td>{d.date_ajout}</td>
-                  <td>
-                    {d.fichier ? (
-                      <button
-                        className="dl-btn"
-                        onClick={() => handleDownload(d.fichier)}
-                        title={`Télécharger ${d.fichier instanceof File ? d.fichier.name : d.fichier}`}
-                      >
-                        ⬇ {d.fichier instanceof File ? d.fichier.name : d.fichier}
-                      </button>
-                    ) : (
-                      <span className="no-file">Aucun fichier</span>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="view-doc-grid">
+
+            <div className="view-doc-item">
+              <span className="view-doc-label">Brevet lié</span>
+              <span className="view-doc-value">{doc.brevet_lie}</span>
+            </div>
+
+            <div className="view-doc-item">
+              <span className="view-doc-label">Nom document</span>
+              <span className="view-doc-value">{doc.nom_document}</span>
+            </div>
+
+            <div className="view-doc-item">
+              <span className="view-doc-label">Type</span>
+              <span className="view-doc-value">{doc.type_document}</span>
+            </div>
+
+            <div className="view-doc-item">
+              <span className="view-doc-label">Date ajout</span>
+              <span className="view-doc-value">{doc.date_ajout}</span>
+            </div>
+
+            <div className="view-doc-item full">
+              <span className="view-doc-label">Description</span>
+              <span className="view-doc-value">{doc.description || "—"}</span>
+            </div>
+
+            <div className="view-doc-item full">
+              <span className="view-doc-label">Fichier</span>
+              {fileName ? (
+                <div className="view-file-row">
+                  <InsertDriveFileOutlinedIcon style={{ fontSize: 16, color: "#EA6113" }} />
+                  <span className="view-file-name">{fileName}</span>
+                  <button className="view-dl-btn" onClick={handleDownload}>
+                    <DownloadIcon style={{ fontSize: 16 }} />
+                    Télécharger
+                  </button>
+                </div>
+              ) : (
+                <span className="no-file">Aucun fichier joint</span>
+              )}
+            </div>
+
+          </div>
         </div>
 
         <div className="modal-footer">
           <button className="dt-btn" onClick={onClose}>Fermer</button>
         </div>
+
       </div>
     </div>
   );
