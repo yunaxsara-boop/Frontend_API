@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
 
+/* ═══════════════════════════════════════════════════════════
+   PAGE WRAPPER
+   ═══════════════════════════════════════════════════════════ */
 .view-page {
   min-height: 100vh;
   background: #f4f0ea;
@@ -10,20 +13,28 @@
   justify-content: center;
 }
 
-.view-card-wrapper {
+/* ═══════════════════════════════════════════════════════════
+   CARD
+   ═══════════════════════════════════════════════════════════ */
+.view-card {
   width: 100%;
   max-width: 900px;
   background: #fff;
   border-radius: 20px;
-  padding: 36px 40px;
+  padding: 40px 44px;
   box-shadow:
-    0 4px 6px rgba(234,97,19,.05),
-    0 12px 32px rgba(0,0,0,.08);
+    0 4px 6px rgba(234, 97, 19, .05),
+    0 12px 32px rgba(0, 0, 0, .08);
   border: 1px solid #f0e0cc;
+  display: flex;
+  flex-direction: column;
 }
 
+/* ═══════════════════════════════════════════════════════════
+   TITRE
+   ═══════════════════════════════════════════════════════════ */
 .view-title {
-  font-size: 19px;
+  font-size: 20px;
   font-weight: 700;
   color: #1a1a2e;
   margin: 0 0 28px;
@@ -33,12 +44,46 @@
   letter-spacing: -0.2px;
 }
 
-/* ─── Info grid ──────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   SECTION LABEL
+   ═══════════════════════════════════════════════════════════ */
+.view-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  color: #EA6113;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 22px 0 14px;
+}
+
+.view-section-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, #f0ddd0, transparent);
+}
+
+/* ── Badge compteur inventeurs ───────────────────────────── */
+.view-count {
+  background: #EA6113;
+  color: #fff;
+  border-radius: 20px;
+  padding: 1px 8px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INFO GRID
+   ═══════════════════════════════════════════════════════════ */
 .view-info-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 14px;
-  margin-bottom: 24px;
+  margin-bottom: 4px;
 }
 
 .view-info-item {
@@ -58,7 +103,7 @@
   text-transform: uppercase;
   letter-spacing: .6px;
   color: #a0826d;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
 }
 
 .view-info-value {
@@ -67,7 +112,9 @@
   font-weight: 500;
 }
 
-/* ─── Status badge ───────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   BADGE STATUT
+   ═══════════════════════════════════════════════════════════ */
 .view-status {
   display: inline-block;
   padding: 3px 12px;
@@ -81,64 +128,77 @@
 .view-status.accepter   { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
 .view-status.refuser    { background: #fce4ec; color: #c62828; border: 1px solid #ef9a9a; }
 
-/* ─── Section label ──────────────────────────────────────── */
-.view-section-label {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .8px;
-  color: #EA6113;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.view-section-label::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, #f0ddd0, transparent);
-}
-
-/* ─── Docs ───────────────────────────────────────────────── */
-.view-docs-box {
-  border: 1.5px dashed #f0ddd0;
-  padding: 16px;
-  border-radius: 12px;
-  background: #fdf8f3;
+/* ═══════════════════════════════════════════════════════════
+   PERSONNES GRID  (déposant + inventeurs)
+   ═══════════════════════════════════════════════════════════ */
+.view-personnes-grid {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-bottom: 28px;
+  gap: 10px;
+  margin-bottom: 4px;
 }
 
-.view-doc-item {
+/* ─── Card personne ──────────────────────────────────────── */
+.view-personne-card {
+  background: #fdf8f3;
+  border: 1.5px solid #f0ddd0;
+  border-radius: 12px;
+  padding: 14px 18px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  background: #fff4e6;
-  padding: 7px 12px;
-  border-radius: 8px;
-  color: #EA6113;
-  border: 1px solid #ffd7b3;
-  font-weight: 500;
-  list-style: none;
+  gap: 14px;
+  transition: border-color .15s;
 }
 
-.view-doc-item::before { content: "📎"; font-size: 13px; }
+.view-personne-card:hover { border-color: #F88F22; }
 
-.view-no-docs {
+/* ─── Avatar initiales ───────────────────────────────────── */
+.view-personne-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #EA6113, #FBB931);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ─── Nom + sous-titre ───────────────────────────────────── */
+.view-personne-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2d2013;
+}
+
+.view-personne-sub {
+  font-size: 11px;
+  color: #a0826d;
+  margin-top: 2px;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  font-weight: 600;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TEXTE VIDE
+   ═══════════════════════════════════════════════════════════ */
+.view-empty {
   font-size: 13px;
   color: #c4a882;
-  text-align: center;
-  padding: 8px 0;
+  margin-bottom: 4px;
 }
 
-/* ─── Back button ────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   BOUTON RETOUR
+   ═══════════════════════════════════════════════════════════ */
 .view-btn-back {
-  padding: 11px 24px;
+  margin-top: 28px;
+  align-self: flex-start;
+  padding: 11px 26px;
   border: none;
   border-radius: 11px;
   background: linear-gradient(135deg, #EA6113, #F88F22);
@@ -148,7 +208,7 @@
   cursor: pointer;
   font-family: inherit;
   transition: opacity .18s, transform .15s;
-  box-shadow: 0 3px 12px rgba(248,143,34,0.35);
+  box-shadow: 0 3px 12px rgba(248, 143, 34, 0.35);
 }
 
 .view-btn-back:hover { opacity: .9; transform: translateY(-1px); }

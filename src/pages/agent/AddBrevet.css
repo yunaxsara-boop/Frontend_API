@@ -1,12 +1,9 @@
-/* ═══════════════════════════════════════════════════════════
-   BREVET FORM  —  partagé AddBrevet + EditBrevet
-   Sunset palette  #EA6113  #F88F22  #FBB931  #FFE3B3
-   ═══════════════════════════════════════════════════════════ */
-
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
 
-/* ─── Page wrapper ───────────────────────────────────────── */
-.brevet-page {
+/* ═══════════════════════════════════════════════════════════
+   PAGE WRAPPER
+   ═══════════════════════════════════════════════════════════ */
+.add-page {
   min-height: 100vh;
   background: #f4f0ea;
   padding: 32px 24px;
@@ -16,22 +13,29 @@
   justify-content: center;
 }
 
-/* ─── Card ───────────────────────────────────────────────── */
-.brevet-card {
+/* ═══════════════════════════════════════════════════════════
+   CARD PRINCIPALE
+   ═══════════════════════════════════════════════════════════ */
+.add-card {
   width: 100%;
-  max-width: 1000px;
+  max-width: 900px;
   background: #fff;
   border-radius: 20px;
-  padding: 36px 40px;
+  padding: 40px 44px;
   box-shadow:
-    0 4px 6px rgba(234,97,19,.05),
-    0 12px 32px rgba(0,0,0,.08);
+    0 4px 6px rgba(234, 97, 19, .05),
+    0 12px 32px rgba(0, 0, 0, .08);
   border: 1px solid #f0e0cc;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
-/* ─── Title ──────────────────────────────────────────────── */
-.brevet-title {
-  font-size: 19px;
+/* ═══════════════════════════════════════════════════════════
+   TITRE
+   ═══════════════════════════════════════════════════════════ */
+.add-title {
+  font-size: 20px;
   font-weight: 700;
   color: #1a1a2e;
   margin: 0 0 28px;
@@ -41,111 +45,23 @@
   letter-spacing: -0.2px;
 }
 
-/* ─── Grid ───────────────────────────────────────────────── */
-.brevet-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 18px;
-}
-
-/* ─── Form group ─────────────────────────────────────────── */
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.form-group.full-width {
-  grid-column: span 2;
-}
-
-/* ─── Label ──────────────────────────────────────────────── */
-.form-group label {
-  font-size: 11px;
-  font-weight: 700;
-  color: #a0826d;
-  text-transform: uppercase;
-  letter-spacing: .5px;
-}
-
-/* ─── Input / Select ─────────────────────────────────────── */
-.form-group input,
-.form-group select {
-  padding: 10px 13px;
+/* ═══════════════════════════════════════════════════════════
+   MESSAGE ERREUR
+   ═══════════════════════════════════════════════════════════ */
+.add-error {
+  background: #fce4ec;
+  border: 1px solid #ef9a9a;
   border-radius: 10px;
-  border: 1.5px solid #f0ddd0 !important;
-  font-size: 13.5px;
-  background: #fdf8f3 !important;
-  color: #2d2013;
-  font-family: inherit;
-  transition: border .15s, box-shadow .15s, background .15s;
-  outline: none !important;
-}
-
-.form-group input:focus,
-.form-group select:focus {
-  border-color: #F88F22 !important;
-  background: #fff !important;
-  box-shadow: 0 0 0 3px rgba(248,143,34,0.18) !important;
-}
-
-.form-group input::placeholder { color: #c4a882; }
-
-/* ─── File input ─────────────────────────────────────────── */
-.form-group input[type="file"] {
-  border: 1.5px dashed #f0ddd0 !important;
-  background: #fdf8f3 !important;
-  padding: 10px 12px;
-  cursor: pointer;
-  color: #a0826d;
-}
-
-.form-group input[type="file"]:hover {
-  border-color: #F88F22 !important;
-  background: #fff !important;
-}
-
-/* ─── Docs box ───────────────────────────────────────────── */
-.docs-box {
-  border: 1.5px dashed #f0ddd0;
-  padding: 16px;
-  border-radius: 12px;
-  background: #fdf8f3;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.docs-box input[type="file"] {
-  border: none !important;
-  background: transparent !important;
-  padding: 0;
+  padding: 10px 16px;
+  color: #c62828;
   font-size: 13px;
-  color: #a0826d;
+  margin-bottom: 16px;
 }
 
-/* ─── Doc item ───────────────────────────────────────────── */
-.doc-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  background: #fff4e6;
-  padding: 7px 12px;
-  border-radius: 8px;
-  color: #EA6113;
-  border: 1px solid #ffd7b3;
-  font-weight: 500;
-}
-
-.doc-item::before {
-  content: "📎";
-  font-size: 13px;
-}
-
-/* ─── Section divider ────────────────────────────────────── */
-.brevet-section-label {
-  grid-column: span 2;
+/* ═══════════════════════════════════════════════════════════
+   SECTION LABEL  (séparateur orange)
+   ═══════════════════════════════════════════════════════════ */
+.add-section-label {
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
@@ -154,51 +70,220 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 6px;
+  margin: 24px 0 14px;
 }
 
-.brevet-section-label::after {
+.add-section-label::after {
   content: "";
   flex: 1;
   height: 1px;
   background: linear-gradient(90deg, #f0ddd0, transparent);
 }
 
-/* ─── Actions ────────────────────────────────────────────── */
-.brevet-actions {
-  margin-top: 28px;
+/* ═══════════════════════════════════════════════════════════
+   GRILLE CHAMPS
+   ═══════════════════════════════════════════════════════════ */
+.add-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 4px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FORM GROUP  (label + input)
+   ═══════════════════════════════════════════════════════════ */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #a0826d;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+.form-group input,
+.form-group select {
+  padding: 10px 13px;
+  border-radius: 10px;
+  border: 1.5px solid #f0ddd0;
+  font-size: 13.5px;
+  background: #fdf8f3;
+  color: #2d2013;
+  font-family: inherit;
+  transition: border .15s, box-shadow .15s, background .15s;
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #F88F22;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(248, 143, 34, 0.18);
+}
+
+.form-group input::placeholder { color: #c4a882; }
+
+/* ═══════════════════════════════════════════════════════════
+   PERSONNE CARD  (déposant + inventeur)
+   ═══════════════════════════════════════════════════════════ */
+.personne-card {
+  background: #fdf8f3;
+  border: 1.5px solid #f0ddd0;
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 12px;
+  transition: border-color .15s;
+}
+
+.personne-card:hover {
+  border-color: #F88F22;
+}
+
+/* ─── En-tête de la card inventeur ────────────────────────── */
+.personne-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.personne-card-num {
+  font-size: 12px;
+  font-weight: 700;
+  color: #EA6113;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+/* ─── Ligne nom + prénom ──────────────────────────────────── */
+.personne-row {
+  display: flex;
+  gap: 14px;
+  align-items: flex-end;
+}
+
+.personne-row > div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.personne-row label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #a0826d;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+.personne-row input {
+  padding: 10px 13px;
+  border-radius: 10px;
+  border: 1.5px solid #f0ddd0;
+  font-size: 13.5px;
+  background: #fff;
+  color: #2d2013;
+  font-family: inherit;
+  transition: border .15s, box-shadow .15s;
+  outline: none;
+}
+
+.personne-row input:focus {
+  border-color: #F88F22;
+  box-shadow: 0 0 0 3px rgba(248, 143, 34, 0.18);
+}
+
+.personne-row input::placeholder { color: #c4a882; }
+
+/* ═══════════════════════════════════════════════════════════
+   BOUTON SUPPRIMER INVENTEUR
+   ═══════════════════════════════════════════════════════════ */
+.btn-remove-inv {
+  background: none;
+  border: 1.5px solid #EA6113;
+  color: #EA6113;
+  border-radius: 8px;
+  padding: 5px 12px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  transition: background .15s, color .15s;
+}
+
+.btn-remove-inv:hover {
+  background: #EA6113;
+  color: #fff;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BOUTON AJOUTER INVENTEUR
+   ═══════════════════════════════════════════════════════════ */
+.btn-add-inv {
+  width: 100%;
+  background: none;
+  border: 1.5px dashed #F88F22;
+  color: #F88F22;
+  border-radius: 10px;
+  padding: 11px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  transition: background .15s, border-color .15s;
+  margin-bottom: 8px;
+}
+
+.btn-add-inv:hover {
+  background: #fff4e6;
+  border-color: #EA6113;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BOUTONS ACTIONS
+   ═══════════════════════════════════════════════════════════ */
+.add-actions {
   display: flex;
   gap: 12px;
+  margin-top: 28px;
 }
 
 .btn-save {
   flex: 1;
-  padding: 12px;
-  border: none !important;
+  padding: 13px;
+  border: none;
   border-radius: 11px;
-  background: linear-gradient(135deg, #EA6113, #F88F22) !important;
-  color: #fff !important;
+  background: linear-gradient(135deg, #EA6113, #F88F22);
+  color: #fff;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: opacity .18s, transform .15s;
-  box-shadow: 0 3px 12px rgba(248,143,34,0.35);
+  box-shadow: 0 3px 12px rgba(248, 143, 34, 0.35);
   font-family: inherit;
 }
 
-.btn-save:hover { opacity: .9; transform: translateY(-1px); }
+.btn-save:hover    { opacity: .9; transform: translateY(-1px); }
+.btn-save:disabled { opacity: .6; cursor: not-allowed; transform: none; }
 
 .btn-cancel {
   flex: 1;
-  padding: 12px;
-  border: 1.5px solid #f0ddd0 !important;
+  padding: 13px;
+  border: 1.5px solid #f0ddd0;
   border-radius: 11px;
-  background: #fff !important;
-  color: #6b7280 !important;
+  background: #fff;
+  color: #6b7280;
   font-size: 14px;
   cursor: pointer;
   font-family: inherit;
   transition: background .15s;
 }
 
-.btn-cancel:hover { background: #fdf5ec !important; }
+.btn-cancel:hover { background: #fdf5ec; }

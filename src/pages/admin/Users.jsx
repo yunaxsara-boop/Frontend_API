@@ -1,62 +1,85 @@
 import { useEffect, useState } from "react";
 import Datatable2 from "../../components/Datatable2";
 import UserForm from "./UserForm";
+import { getUsers, addUser, updateUser, deleteUser } from "../../features/users/userApi";
 
 export default function Users() {
-  const [data, setData] = useState([]);
+  const [data, setData]         = useState([]);
   const [editUser, setEditUser] = useState(null);
+  const [loading, setLoading]   = useState(false);
+  const [error, setError]       = useState("");
 
-  // load demo
-  useEffect(() => {
-    setData([]);
-  }, []);
-
-  // ➜ AJOUT OU UPDATE
-  const handleSubmit = (user) => {
-    if (editUser) {
-      // UPDATE
-      setData((prev) =>
-        prev.map((u) => (u.id === editUser.id ? user : u))
-      );
-      setEditUser(null);
-    } else {
-      // ADD
-      setData((prev) => [...prev, user]);
+  const load = async () => {
+    try {
+      setLoading(true);
+      setError("");
+      const res = await getUsers();
+      setData(res);
+    } catch {
+      setError("Erreur chargement des utilisateurs.");
+    } finally {
+      setLoading(false);
     }
   };
 
-  // ➜ EDIT CLICK
-  const handleEdit = (row) => {
-    setEditUser(row);
+  useEffect(() => { load(); }, []);
+
+  const handleSubmit = async (user) => {
+    try {
+      setError("");
+      if (editUser) {
+        await updateUser(editUser.id, user);
+        setEditUser(null);
+      } else {
+        await addUser(user);
+      }
+      await load();
+    } catch (err) {
+      console.error("ERREUR:", err.response?.data);
+      setError(JSON.stringify(err.response?.data) || "Erreur enregistrement.");
+    }
   };
 
-  // DELETE
-  const handleDelete = (row) => {
-    setData((prev) => prev.filter((u) => u.id !== row.id));
+  const handleDelete = async (row) => {
+    try {
+      await deleteUser(row.id);
+      await load();
+    } catch {
+      setError("Erreur suppression.");
+    }
   };
+
+  if (loading) return <p>Chargement...</p>;
 
   return (
-    <Datatable2
-      title="Utilisateurs"
-      data={data}
-      columns={[
-        { key: "NomUtilisateur", label: "NomUtilisateur" },
-        { key: "nom", label: "Nom" },
-        { key: "prenom", label: "Prénom" },
-        { key: "role", label: "Rôle" },
-        { key: "date_ajout", label: "Date" },
-        { key: "email", label: "Email" },
-        
-      ]}
-      form={
-        <UserForm
-          key={editUser ? editUser.id : "new"} // IMPORTANT 🔥
-          editData={editUser}
-          onSubmit={handleSubmit}
-        />
-      }
-      onEdit={handleEdit}
-      onDelete={handleDelete}
-    />
+    <>
+      {error && <p style={{ color: "red", padding: "8px 16px" }}>{error}</p>}
+      <Datatable2
+        title="Gestion des utilisateurs"
+        exportName="utilisateurs"
+        data={data}
+        columns={[
+  { key: "username", label: "Nom utilisateur" },
+  { key: "email",    label: "Email" },
+  {
+    key: "groups",
+    label: "Groupe",
+    render: (val) =>
+      Array.isArray(val) && val.length > 0 ? val[0] : "—",
+  },
+  { key: "date_ajout", label: "Date ajout" },
+]}
+        form={
+          <UserForm
+            key={editUser ? editUser.id : "new"}
+            editData={editUser}
+            onSubmit={handleSubmit}
+            onCancel={() => setEditUser(null)}
+          />
+        }
+        onEdit={(row) => setEditUser(row)}
+        onDelete={handleDelete}
+      />
+    </>
   );
 }

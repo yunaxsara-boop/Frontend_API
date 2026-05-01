@@ -1,130 +1,136 @@
-
-
-
 import { useEffect, useState } from "react";
 import Datatable2 from "../../components/Datatable2";
 import DocumentForm from "./DocumentForm";
 import DownloadIcon from "@mui/icons-material/Download";
 import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
 import "./documents.css";
+import {
+  getDocuments,
+  deleteDocument,
+  addDocument,
+  updateDocument,
+  downloadDocument,
+} from "../../features/documents/documentApi";
 
 export default function RespDocuments() {
-  const [data, setData] = useState([]);
+  const [data, setData]       = useState([]);
+  const [error, setError]     = useState("");
+  const [loading, setLoading] = useState(false);
   const [editDoc, setEditDoc] = useState(null);
   const [viewDoc, setViewDoc] = useState(null);
 
-  useEffect(() => {
-    setData([
-      {
-        id: 1,
-        nom_document:  "Mémoire descriptif",
-        type_document: "Mémoire descriptif",
-        brevet_lie:    "Brevet FR-2024-001",
-        description:   "Description technique complète du brevet",
-        fichier:       "memoire_001.pdf",
-        date_ajout:    "2024-01-15",
-      },
-      {
-        id: 2,
-        nom_document:  "Reçu paiement",
-        type_document: "Reçu paiement",
-        brevet_lie:    "Brevet FR-2024-001",
-        description:   "Reçu du paiement des taxes",
-        fichier:       "recu_001.pdf",
-        date_ajout:    "2024-01-20",
-      },
-      {
-        id: 3,
-        nom_document:  "Formulaire demande",
-        type_document: "Demande brevet",
-        brevet_lie:    "Brevet FR-2024-002",
-        description:   "Formulaire officiel de demande de brevet",
-        fichier:       "demande_002.pdf",
-        date_ajout:    "2024-02-10",
-      },
-      {
-        id: 4,
-        nom_document:  "Recours administratif",
-        type_document: "Recours",
-        brevet_lie:    "Brevet FR-2024-002",
-        description:   "Document de recours suite au refus",
-        fichier:       "recours_002.pdf",
-        date_ajout:    "2024-03-01",
-      },
-    ]);
-  }, []);
-
-  const handleSubmit = (doc) => {
-    if (editDoc) {
-      setData((prev) => prev.map((d) => (d.id === editDoc.id ? doc : d)));
-      setEditDoc(null);
-    } else {
-      if (Array.isArray(doc)) {
-        setData((prev) => [...prev, ...doc]);
-      } else {
-        setData((prev) => [...prev, doc]);
-      }
+  const load = async () => {
+    try {
+      setLoading(true);
+      setError("");
+      const res = await getDocuments();
+      setData(res);
+    } catch {
+      setError("Erreur de chargement des documents");
+    } finally {
+      setLoading(false);
     }
   };
 
+  useEffect(() => { load(); }, []);
+
+  const handleSubmit = async (doc) => {
+    setError("");
+    setLoading(true);
+    try {
+      if (editDoc) {
+        await updateDocument(editDoc.id_document, doc);
+        setEditDoc(null);
+      } else {
+        await addDocument(doc);
+      }
+      await load();
+    } catch (err) {
+      console.error("ERREUR:", err.response?.data);
+      setError(
+        JSON.stringify(err.response?.data) || "Erreur lors de l'enregistrement."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (row) => {
+    try {
+      await deleteDocument(row.id_document);
+      await load();
+    } catch {
+      setError("Erreur de suppression.");
+    }
+  };
+
+  if (loading) return <p>Chargement...</p>;
+
   return (
     <>
+      {error && <p style={{ color: "red", padding: "8px 16px" }}>{error}</p>}
       <Datatable2
         title="Gestion des documents"
         exportName="documents"
         data={data}
         columns={[
-          { key: "brevet_lie",    label: "Brevet lié"    },
-          { key: "nom_document",  label: "Nom document"  },
-          { key: "type_document", label: "Type"          },
-          { key: "description",   label: "Description"   },
-          { key: "date_ajout",    label: "Date ajout"    },
+          { key: "nom_document", label: "Nom document" },
+          { key: "type_document", label: "Type" },
+          {
+            key: "brevet_info",
+            label: "Brevet",
+            render: (val) => val ? `${val.titre} — N°${val.num_brevet}` : "—",
+          },
+          { key: "date_ajout", label: "Date ajout" },
         ]}
         form={
           <DocumentForm
-            key={editDoc ? editDoc.id : "new"}
+            key={editDoc ? editDoc.id_document : "new"}
             editData={editDoc}
             onSubmit={handleSubmit}
             onCancel={() => setEditDoc(null)}
           />
         }
-        onEdit={(row)   => setEditDoc(row)}
-        onDelete={(row) => setData((prev) => prev.filter((d) => d.id !== row.id))}
-        onView={(row)   => setViewDoc(row)}
+        onEdit={(row) => setEditDoc(row)}
+        onDelete={handleDelete}
+        onView={(row) => setViewDoc(row)}
       />
 
       {viewDoc && (
-        <ViewDocumentModal
-          doc={viewDoc}
-          onClose={() => setViewDoc(null)}
-        />
+        <ViewDocumentModal doc={viewDoc} onClose={() => setViewDoc(null)} />
       )}
     </>
   );
 }
 
 function ViewDocumentModal({ doc, onClose }) {
-  const handleDownload = () => {
-    if (doc.fichier instanceof File) {
-      const url = URL.createObjectURL(doc.fichier);
+  const [downloading, setDownloading] = useState(false);
+
+  const handleDownload = async () => {
+    if (!doc.fichier) {
+      alert("Aucun fichier disponible.");
+      return;
+    }
+    try {
+      setDownloading(true);
+      const res = await downloadDocument(doc.id_document);
+      const url = URL.createObjectURL(new Blob([res.data]));
       const a   = document.createElement("a");
       a.href     = url;
-      a.download = doc.fichier.name;
+      a.download = doc.fichier.split("/").pop();
       a.click();
       URL.revokeObjectURL(url);
-    } else if (typeof doc.fichier === "string" && doc.fichier !== "") {
-      alert(`Le fichier "${doc.fichier}" sera chargé depuis le serveur dans la version finale.`);
-    } else {
-      alert("Aucun fichier disponible.");
+    } catch {
+      alert("Erreur lors du téléchargement.");
+    } finally {
+      setDownloading(false);
     }
   };
 
-  const fileName =
-    doc.fichier instanceof File
-      ? doc.fichier.name
-      : typeof doc.fichier === "string" && doc.fichier !== ""
-      ? doc.fichier
-      : null;
+  const fileName   = doc.fichier ? doc.fichier.split("/").pop() : null;
+  const brevetLabel = doc.brevet_info
+    ? `${doc.brevet_info.titre} — N°${doc.brevet_info.num_brevet}`
+    : "—";
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -140,7 +146,7 @@ function ViewDocumentModal({ doc, onClose }) {
 
             <div className="view-doc-item">
               <span className="view-doc-label">Brevet lié</span>
-              <span className="view-doc-value">{doc.brevet_lie}</span>
+              <span className="view-doc-value">{brevetLabel}</span>
             </div>
 
             <div className="view-doc-item">
@@ -150,7 +156,7 @@ function ViewDocumentModal({ doc, onClose }) {
 
             <div className="view-doc-item">
               <span className="view-doc-label">Type</span>
-              <span className="view-doc-value">{doc.type_document}</span>
+              <span className="view-doc-value">{doc.type_document || "—"}</span>
             </div>
 
             <div className="view-doc-item">
@@ -169,9 +175,13 @@ function ViewDocumentModal({ doc, onClose }) {
                 <div className="view-file-row">
                   <InsertDriveFileOutlinedIcon style={{ fontSize: 16, color: "#EA6113" }} />
                   <span className="view-file-name">{fileName}</span>
-                  <button className="view-dl-btn" onClick={handleDownload}>
+                  <button
+                    className="view-dl-btn"
+                    onClick={handleDownload}
+                    disabled={downloading}
+                  >
                     <DownloadIcon style={{ fontSize: 16 }} />
-                    Télécharger
+                    {downloading ? "..." : "Télécharger"}
                   </button>
                 </div>
               ) : (

@@ -1,65 +1,87 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./addBrevet.css"
-import {addBrevet} from "/src/features/brevets/brevetApi.js";
+import "./addBrevet.css";
+import { addBrevet } from "/src/features/brevets/brevetApi.js";
 
 export default function AddBrevet() {
   const navigate = useNavigate();
-  const [loading, setLoading]= useState(false)
-  const [error, setError]=useState("")
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const [form, setForm] = useState({
-    num_brevet: "",
-    titre: "",
-    num_depo: "",
-    date_depo: "",
+    num_brevet:  "",
+    titre:       "",
+    num_depo:    "",
+    date_depo:   "",
     date_sortie: "",
-    titulaire: "",
-    Inventeur: "",
-    Deposant: "",
-    status: "EN_ATTENTE",
-    documents: [],
+    titulaire:   "",
+    statut:      "EN_ATTENTE",
   });
+
+  const [deposant, setDeposant] = useState({
+    nom_dep:    "",
+    prenom_dep: "",
+  });
+
+  const [inventeurs, setInventeurs] = useState([
+    { nom_inv: "", prenom_inv: "" },
+  ]);
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleFiles = (e) => {
-    const files = Array.from(e.target.files).map((f) => f.name);
-    setForm({ ...form, documents: [...form.documents, ...files] });
+  const handleInventeurChange = (index, field, value) => {
+    const updated = [...inventeurs];
+    updated[index] = { ...updated[index], [field]: value };
+    setInventeurs(updated);
   };
 
-    const handleSubmit = async () => {
-      setError("")
-      setLoading(true)
-      try{
-        await addBrevet({
-          ...form, // ...form "déplie" tout le contenu
-          num_brevet: Number(form.num_brevet),
-          num_depot: Number(form.num_depo),
-        })
-        navigate("/agent/brevets")
-      } catch(err){
-        console.log(err)
-        setError("Erreur lors de l'ajout du brevet.")
-      }finally{
-        setLoading(false)
-      }
-    }; 
+  const ajouterInventeur = () =>
+    setInventeurs([...inventeurs, { nom_inv: "", prenom_inv: "" }]);
+
+  const supprimerInventeur = (index) =>
+    setInventeurs(inventeurs.filter((_, i) => i !== index));
+
+  const handleSubmit = async () => {
+    setError("");
+    setLoading(true);
+    try {
+      await addBrevet({
+        num_brevet:      Number(form.num_brevet),
+        titre:           form.titre,
+        num_depo:        Number(form.num_depo),
+        date_depo:       form.date_depo,
+        date_sortie:     form.date_sortie,
+        titulaire:       form.titulaire,
+        statut:          form.statut,
+        deposant_data:   deposant,
+        inventeurs_data: inventeurs.filter(
+          (i) => i.nom_inv.trim() !== "" || i.prenom_inv.trim() !== ""
+        ),
+      });
+      navigate("/agent/brevets");
+    } catch (err) {
+      console.log("ERREUR DÉTAIL:", err.response?.data);
+      setError(JSON.stringify(err.response?.data));
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="form-container">
-      <h2>Ajouter Brevet</h2>
-        {error && <p style={{ color: "red" }}>{error}</p>}
+    <div className="add-page">
+      <div className="add-card">
 
-        <div className="brevet-grid">
+        <h2 className="add-title">Ajouter un Brevet</h2>
 
-          {/* ── Identification ── */}
-          <div className="brevet-section-label">Identification</div>
+        {error && <p className="add-error">{error}</p>}
 
+        {/* ══ Identification ══ */}
+        <div className="add-section-label">Identification</div>
+        <div className="add-grid">
           <div className="form-group">
             <label>Numéro brevet</label>
-            <input name="num_brevet" placeholder="Ex : BR-2024-001" onChange={handleChange} />
+            <input name="num_brevet" placeholder="Ex : 2024001" onChange={handleChange} />
           </div>
 
           <div className="form-group">
@@ -69,72 +91,125 @@ export default function AddBrevet() {
 
           <div className="form-group">
             <label>Numéro de dépôt</label>
-            <input name="num_depo" placeholder="Ex : DEP-2024-001" onChange={handleChange} />
+            <input name="num_depo" placeholder="Ex : 2024001" onChange={handleChange} />
           </div>
 
           <div className="form-group">
             <label>Titulaire</label>
             <input name="titulaire" placeholder="Nom du titulaire" onChange={handleChange} />
           </div>
+        </div>
 
-          {/* ── Dates ── */}
-          <div className="brevet-section-label">Dates</div>
-
+        {/* ══ Dates ══ */}
+        <div className="add-section-label">Dates</div>
+        <div className="add-grid">
           <div className="form-group">
             <label>Date de dépôt</label>
             <input type="date" name="date_depo" onChange={handleChange} />
           </div>
 
-        <div className="form-group">
-          <label>Date sortie</label>
-          <input type="date" name="date_sortie" onChange={handleChange} />
+          <div className="form-group">
+            <label>Date sortie</label>
+            <input type="date" name="date_sortie" onChange={handleChange} />
+          </div>
         </div>
 
-        <div className="form-group">
-          <label>Inventeur</label>
-          <input name="Inventeurs" onChange={handleChange} />
-        </div>
-
-        <div className="form-group">
-          <label>Déposant</label>
-          <input name="Deposants" onChange={handleChange} />
-        </div>
-
-          {/* ── Statut ── */}
-          <div className="brevet-section-label">Statut &amp; Documents</div>
-
+        {/* ══ Statut ══ */}
+        <div className="add-section-label">Statut</div>
+        <div className="add-grid">
           <div className="form-group">
             <label>Statut</label>
-            <select name="status" onChange={handleChange}>
+            <select name="statut" onChange={handleChange}>
               <option value="EN_ATTENTE">EN ATTENTE</option>
               <option value="ACCEPTER">ACCEPTER</option>
               <option value="REFUSER">REFUSER</option>
             </select>
           </div>
-
-          <div className="form-group full-width">
-            <label>Documents</label>
-            <div className="docs-box">
-              <input type="file" multiple onChange={handleFiles} />
-              {form.documents.map((doc, i) => (
-                <div key={i} className="doc-item">{doc}</div>
-              ))}
-            </div>
-          </div>
-
         </div>
 
-      <div className="form-actions">
-        <button className="btn-save" onClick={handleSubmit} disabled={loading} >
-          {loading ? "Enregistrement..." : "Enregistrer"}
+        {/* ══ Déposant ══ */}
+        <div className="add-section-label">Déposant</div>
+        <div className="personne-card">
+          <div className="personne-row">
+            <div>
+              <label>Nom</label>
+              <input
+                placeholder="Nom du déposant"
+                value={deposant.nom_dep}
+                onChange={(e) =>
+                  setDeposant({ ...deposant, nom_dep: e.target.value })
+                }
+              />
+            </div>
+            <div>
+              <label>Prénom</label>
+              <input
+                placeholder="Prénom du déposant"
+                value={deposant.prenom_dep}
+                onChange={(e) =>
+                  setDeposant({ ...deposant, prenom_dep: e.target.value })
+                }
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* ══ Inventeurs ══ */}
+        <div className="add-section-label">Inventeurs</div>
+
+        {inventeurs.map((inv, index) => (
+          <div key={index} className="personne-card">
+            <div className="personne-card-header">
+              <span className="personne-card-num">Inventeur {index + 1}</span>
+              {inventeurs.length > 1 && (
+                <button
+                  type="button"
+                  className="btn-remove-inv"
+                  onClick={() => supprimerInventeur(index)}
+                >
+                  ✕ Supprimer
+                </button>
+              )}
+            </div>
+            <div className="personne-row">
+              <div>
+                <label>Nom</label>
+                <input
+                  placeholder="Nom"
+                  value={inv.nom_inv}
+                  onChange={(e) =>
+                    handleInventeurChange(index, "nom_inv", e.target.value)
+                  }
+                />
+              </div>
+              <div>
+                <label>Prénom</label>
+                <input
+                  placeholder="Prénom"
+                  value={inv.prenom_inv}
+                  onChange={(e) =>
+                    handleInventeurChange(index, "prenom_inv", e.target.value)
+                  }
+                />
+              </div>
+            </div>
+          </div>
+        ))}
+
+        <button type="button" className="btn-add-inv" onClick={ajouterInventeur}>
+          + Ajouter un inventeur
         </button>
 
-        <button
-          className="btn-cancel"
-          onClick={() => navigate("/agent/brevets")}
-        >
-          Annuler
-        </button>
+        {/* ══ Actions ══ */}
+        <div className="add-actions">
+          <button className="btn-save" onClick={handleSubmit} disabled={loading}>
+            {loading ? "Enregistrement..." : "Enregistrer"}
+          </button>
+          <button className="btn-cancel" onClick={() => navigate("/agent/brevets")}>
+            Annuler
+          </button>
+        </div>
+
       </div>
     </div>
   );

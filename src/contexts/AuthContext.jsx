@@ -14,70 +14,85 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// mapping groupe Django → role frontend
+// ✅ mapping groupe Django → role frontend
 const GROUP_TO_ROLE = {
+  "admin":        "admin",
   "agent":        "agent",
   "responsable":  "responsable",
   "directeur":    "directeur",
-}
+};
 
 const ROLE_HOME = {
-  admin:        "/admin",
-  agent:        "/agent",
-  responsable:  "/responsable",
-  directeur:    "/directeur",
-}
+  admin:       "/admin",
+  agent:       "/agent",
+  responsable: "/responsable",
+  directeur:   "/directeur",
+};
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null)  
-  const [error, setError] = useState("")
+  const [user, setUser]   = useState(null);
+  const [error, setError] = useState("");
 
-  // garde la session après refresh
   useEffect(() => {
     const saved = localStorage.getItem("user");
     if (saved) setUser(JSON.parse(saved));
   }, []);
 
   const login = async (email, password) => {
-    setError("")
+    setError("");
     try {
-      const res = await api.post("users/login/", { username: email, password })
-      localStorage.setItem("token", res.data.token)
-      console.log("token ok: ", res.data.token)
+      const res = await api.post("users/login/", { username: email, password });
+      localStorage.setItem("token", res.data.token);
 
-      const me = await api.get("users/me/")
-      console.log("me.data:", me.data)        
-      console.log("groups:", me.data.groups)
+      const me = await api.get("users/me/");
+      console.log("me.data:", me.data);
 
-      const djangoGroup = me.data.groups[0]
-      console.log("djangoGroup:", djangoGroup)
+      let role = null;
 
-      const role = GROUP_TO_ROLE[djangoGroup]       
-       console.log("role:", role)
+      // ✅ superuser ou is_staff → role admin automatiquement
+      if (me.data.is_superuser || me.data.is_staff) {
+        role = "admin";
+      } else {
+        // ✅ sinon on lit le groupe Django
+        const djangoGroup = (me.data.groups?.[0] || "").toLowerCase();
+        role = GROUP_TO_ROLE[djangoGroup] || null;
+      }
 
-      // 3. construit l'objet user
-      const userData = { email, role, id: me.data.id }
-      setUser(userData)
-      localStorage.setItem("user", JSON.stringify(userData))
+      console.log("role détecté:", role);
 
-      // 4. redirige selon le role
-      navigate(ROLE_HOME[role] || "/")
+      if (!role) {
+        setError("Aucun rôle assigné à ce compte.");
+        localStorage.removeItem("token");
+        return;
+      }
+
+      const userData = {
+        email,
+        role,
+        id:           me.data.id,
+        is_superuser: me.data.is_superuser,
+        is_staff:     me.data.is_staff,
+      };
+
+      setUser(userData);
+      localStorage.setItem("user", JSON.stringify(userData));
+      navigate(ROLE_HOME[role] || "/");
 
     } catch (err) {
-      console.log(err)
-      setError("Identifiants incorrects.")
+      console.log(err);
+      setError("Identifiants incorrects.");
     }
-  }
+  };
 
   const logout = () => {
-    localStorage.removeItem("token")
-    localStorage.removeItem("user")
-    setUser(null)
-    navigate("/login")
-  }
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setUser(null);
+    navigate("/login");
+  };
 
   return (
     <AuthContext.Provider value={{ user, login, logout, error }}>
