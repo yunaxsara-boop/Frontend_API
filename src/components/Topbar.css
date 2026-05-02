@@ -279,6 +279,41 @@
   padding: 5px 10px;
   border-radius: 10px;
 }
+/* ── SEARCH DROPDOWN ─────────────────────────── */
+.searchDropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1.5px solid #f5dcc4;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(234,97,19,.12);
+  z-index: 999;
+  overflow: hidden;
+}
+
+.searchDropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 13.5px;
+  color: #2d2013;
+  transition: background .13s;
+}
+
+.searchDropdownItem:hover { background: #fff6ee; }
+
+.searchDropdownEmoji { font-size: 16px; }
+
+.searchDropdownEmpty {
+  padding: 12px 14px;
+  font-size: 13px;
+  color: #a0826d;
+  text-align: center;
+}
 .userContainer:hover { background: #f5f5f5; }
 .userInfo { display: flex; flex-direction: column; }
 .username { font-size: 13px; font-weight: 600; color: #333; }

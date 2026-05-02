@@ -33,7 +33,7 @@ export default function Login() {
             <img src={user_icon} alt="user" />
             <input
               type="text"
-              placeholder="Email"
+              placeholder="Nom utilisateur"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />

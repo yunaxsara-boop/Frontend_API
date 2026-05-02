@@ -238,14 +238,16 @@ export default function DataTable3({
         <div className="dt3-toolbar">
           <div className="dt3-toolbar-left">
             <div className="dt3-search-wrap">
-              <SearchIcon />
-              <input
-                className="dt3-search"
-                placeholder="Rechercher..."
-                value={search}
-                onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-              />
-            </div>
+  <div>
+    <SearchIcon style={{ fontSize: 17 }} />
+  </div>
+  <input
+    className="dt3-search"
+    placeholder="Rechercher..."
+    value={search}
+    onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+  />
+</div>
             {statusList.length > 1 && (
               <select className="dt3-select" value={statusFilter}
                 onChange={(e) => { setStatus(e.target.value); setPage(1); }}>

@@ -73,6 +73,7 @@ export function AuthProvider({ children }) {
         email,
         role,
         id:           me.data.id,
+        username:     me.data.username,
         is_superuser: me.data.is_superuser,
         is_staff:     me.data.is_staff,
       };
