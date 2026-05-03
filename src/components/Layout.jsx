@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import Sidebar from "./Sidebar";
-import Topbar  from "./Topbar";
+import Sidebar  from "./Sidebar";
+import Topbar   from "./Topbar";
+import Chatbot  from "./Chatbot";   // ← ajoute
 
 const Layout = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
@@ -14,6 +15,7 @@ const Layout = ({ children }) => {
           {children}
         </div>
       </div>
+      <Chatbot />   {/* ← ajoute */}
     </div>
   );
 };
