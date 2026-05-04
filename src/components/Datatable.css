@@ -1,13 +1,9 @@
 /* ═══════════════════════════════════════════════════════════
    SUNSET PALETTE  —  datatable.css  (partagé DataTable + Datatable2)
-   #EA6113  orange brûlé   primaire foncé
-   #F88F22  orange vif     primaire
-   #FBB931  or chaud       accent
-   #FFE3B3  crème claire   fond doux
    ═══════════════════════════════════════════════════════════ */
 
 /* ─────────────────────────────────────────────────────────
-   1. LAYOUT — Datatable2  (formulaire gauche | table droite)
+   1. LAYOUT — Datatable2
    ───────────────────────────────────────────────────────── */
 .dt-layout {
   display: flex;
@@ -17,7 +13,6 @@
   align-items: flex-start;
   padding: 28px;
   background: #ffffff;
-  min-height: 100vh;
   font-family: "DM Sans", "Segoe UI", Arial, sans-serif;
 }
 
@@ -34,17 +29,16 @@
 }
 
 /* ─────────────────────────────────────────────────────────
-   2. LAYOUT — DataTable  (pleine largeur, pas de form)
+   2. LAYOUT — DataTable
    ───────────────────────────────────────────────────────── */
 .dt-container {
-  padding: 28px;
+  padding: 20px 28px 8px 28px;
   background: #faf7f2;
-  min-height: 100vh;
   font-family: "DM Sans", "Segoe UI", Arial, sans-serif;
 }
 
 /* ─────────────────────────────────────────────────────────
-   3. FORM CARD  (utilisé dans Datatable2)
+   3. FORM CARD
    ───────────────────────────────────────────────────────── */
 .user-form {
   background: #fff;
@@ -140,7 +134,7 @@
 .user-form button[type="button"]:hover { background: #fdf5ec !important; }
 
 /* ─────────────────────────────────────────────────────────
-   4. HEADER  (partagé)
+   4. HEADER
    ───────────────────────────────────────────────────────── */
 .dt-header {
   display: flex;
@@ -206,7 +200,7 @@
 .dt-btn-pdf:hover { opacity: .85; }
 
 /* ─────────────────────────────────────────────────────────
-   5. SEARCH  (partagé)
+   5. SEARCH
    ───────────────────────────────────────────────────────── */
 .dt-search-wrap {
   position: relative;
@@ -234,7 +228,7 @@
 }
 
 /* ─────────────────────────────────────────────────────────
-   6. TABLE CARD  (partagé)
+   6. TABLE CARD
    ───────────────────────────────────────────────────────── */
 .dt-table-card {
   background: #fff;
@@ -253,7 +247,6 @@
   font-size: 13.5px;
 }
 
-/* Header gradient */
 .dt-table thead tr {
   background: linear-gradient(135deg, #EA6113 0%, #F88F22 100%);
 }
@@ -277,7 +270,6 @@
 
 .dt-table th:hover { opacity: .85; }
 
-/* Rows */
 .dt-table td {
   padding: 11px 16px !important;
   border-bottom: 1px solid #faf0e8 !important;
@@ -303,7 +295,7 @@
 }
 
 /* ─────────────────────────────────────────────────────────
-   7. ICON BUTTONS  (partagé)
+   7. ICON BUTTONS
    ───────────────────────────────────────────────────────── */
 .dt-btn-icon {
   border: none !important;
@@ -328,7 +320,7 @@
 .dt-btn-delete { background: #fee2e2 !important; color: #b91c1c !important; }
 
 /* ─────────────────────────────────────────────────────────
-   8. PAGINATION  (partagé)
+   8. PAGINATION
    ───────────────────────────────────────────────────────── */
 .dt-pagination {
   display: flex;
@@ -383,8 +375,8 @@
 
 .dt-pg-ellipsis { font-size: 13px; color: #c4a882; padding: 0 3px; }
 
-.btn{
-    margin-top: 20px;
+.btn {
+  margin-top: 20px;
   flex: 1;
   padding: 12px;
   border: none !important;

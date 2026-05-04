@@ -19,20 +19,26 @@ import AddBrevet      from "./pages/agent/AddBrevet";
 import EditBrevet     from "./pages/agent/EditBrevet";
 import ViewBrevet     from "./pages/agent/ViewBrevet";
 import AgentDemandes  from "./pages/agent/Demandes";
+import AddDemande     from "./pages/agent/AddDemande";
+import EditDemande    from "./pages/agent/EditDemande";
+import ViewDemande    from "./pages/agent/ViewDemande";
 import AgentPaiements from "./pages/agent/Paiements";
 import AgentRecours   from "./pages/agent/Recours";
 import AgentDocuments from "./pages/agent/Documents";
 
 /* ── RESPONSABLE ── */
-import RespDashboard  from "./pages/responsable/Dashboard";
-import RespBrevets    from "./pages/responsable/Brevets";
-import RespAddBrevet  from "./pages/responsable/AddBrevet";
-import RespEditBrevet from "./pages/responsable/EditBrevet";
-import RespViewBrevet from "./pages/responsable/ViewBrevet";
-import RespDemandes   from "./pages/responsable/Demandes";
-import RespPaiements  from "./pages/responsable/Paiements";
-import RespRecours    from "./pages/responsable/Recours";
-import RespDocuments  from "./pages/responsable/Documents";
+import RespDashboard   from "./pages/responsable/Dashboard";
+import RespBrevets     from "./pages/responsable/Brevets";
+import RespAddBrevet   from "./pages/responsable/AddBrevet";
+import RespEditBrevet  from "./pages/responsable/EditBrevet";
+import RespViewBrevet  from "./pages/responsable/ViewBrevet";
+import RespDemandes    from "./pages/responsable/Demandes";
+import RespAddDemande  from "./pages/responsable/RespAddDemande";
+import RespEditDemande from "./pages/responsable/RespEditDemande";
+import RespViewDemande from "./pages/responsable/RespViewDemande";
+import RespPaiements   from "./pages/responsable/Paiements";
+import RespRecours     from "./pages/responsable/Recours";
+import RespDocuments   from "./pages/responsable/Documents";
 
 /* ── DIRECTEUR ── */
 import DirDashboard from "./pages/directeur/Dashboard";
@@ -76,26 +82,32 @@ export default function App() {
         <Route path="/admin/users" element={<ProtectedRoute roles={["admin"]}><Layout><AdminUsers /></Layout></ProtectedRoute>} />
 
         {/* ── AGENT ── */}
-        <Route path="/agent"                  element={<ProtectedRoute roles={["agent"]}><Layout><AgentDashboard /></Layout></ProtectedRoute>} />
-        <Route path="/agent/brevets"          element={<ProtectedRoute roles={["agent"]}><Layout><AgentBrevets /></Layout></ProtectedRoute>} />
-        <Route path="/agent/brevets/add"      element={<ProtectedRoute roles={["agent"]}><Layout><AddBrevet /></Layout></ProtectedRoute>} />
-        <Route path="/agent/brevets/edit/:id" element={<ProtectedRoute roles={["agent"]}><Layout><EditBrevet /></Layout></ProtectedRoute>} />
-        <Route path="/agent/brevets/view/:id" element={<ProtectedRoute roles={["agent"]}><Layout><ViewBrevet /></Layout></ProtectedRoute>} />
-        <Route path="/agent/demandes"         element={<ProtectedRoute roles={["agent"]}><Layout><AgentDemandes /></Layout></ProtectedRoute>} />
-        <Route path="/agent/paiements"        element={<ProtectedRoute roles={["agent"]}><Layout><AgentPaiements /></Layout></ProtectedRoute>} />
-        <Route path="/agent/recours"          element={<ProtectedRoute roles={["agent"]}><Layout><AgentRecours /></Layout></ProtectedRoute>} />
-        <Route path="/agent/documents"        element={<ProtectedRoute roles={["agent"]}><Layout><AgentDocuments /></Layout></ProtectedRoute>} />
+        <Route path="/agent"                   element={<ProtectedRoute roles={["agent"]}><Layout><AgentDashboard /></Layout></ProtectedRoute>} />
+        <Route path="/agent/brevets"           element={<ProtectedRoute roles={["agent"]}><Layout><AgentBrevets /></Layout></ProtectedRoute>} />
+        <Route path="/agent/brevets/add"       element={<ProtectedRoute roles={["agent"]}><Layout><AddBrevet /></Layout></ProtectedRoute>} />
+        <Route path="/agent/brevets/edit/:id"  element={<ProtectedRoute roles={["agent"]}><Layout><EditBrevet /></Layout></ProtectedRoute>} />
+        <Route path="/agent/brevets/view/:id"  element={<ProtectedRoute roles={["agent"]}><Layout><ViewBrevet /></Layout></ProtectedRoute>} />
+        <Route path="/agent/demandes"          element={<ProtectedRoute roles={["agent"]}><Layout><AgentDemandes /></Layout></ProtectedRoute>} />
+        <Route path="/agent/demandes/add"      element={<ProtectedRoute roles={["agent"]}><Layout><AddDemande /></Layout></ProtectedRoute>} />
+        <Route path="/agent/demandes/edit/:id" element={<ProtectedRoute roles={["agent"]}><Layout><EditDemande /></Layout></ProtectedRoute>} />
+        <Route path="/agent/demandes/view/:id" element={<ProtectedRoute roles={["agent"]}><Layout><ViewDemande /></Layout></ProtectedRoute>} />
+        <Route path="/agent/paiements"         element={<ProtectedRoute roles={["agent"]}><Layout><AgentPaiements /></Layout></ProtectedRoute>} />
+        <Route path="/agent/recours"           element={<ProtectedRoute roles={["agent"]}><Layout><AgentRecours /></Layout></ProtectedRoute>} />
+        <Route path="/agent/documents"         element={<ProtectedRoute roles={["agent"]}><Layout><AgentDocuments /></Layout></ProtectedRoute>} />
 
         {/* ── RESPONSABLE ── */}
-        <Route path="/responsable"           element={<ProtectedRoute roles={["responsable"]}><Layout><RespDashboard /></Layout></ProtectedRoute>} />
-        <Route path="/responsable/demandes"  element={<ProtectedRoute roles={["responsable"]}><Layout><RespDemandes /></Layout></ProtectedRoute>} />
-        <Route path="/responsable/paiements" element={<ProtectedRoute roles={["responsable"]}><Layout><RespPaiements /></Layout></ProtectedRoute>} />
-        <Route path="/responsable/recours"   element={<ProtectedRoute roles={["responsable"]}><Layout><RespRecours /></Layout></ProtectedRoute>} />
-        <Route path="/responsable/documents" element={<ProtectedRoute roles={["responsable"]}><Layout><RespDocuments /></Layout></ProtectedRoute>} />
-        <Route path="/responsable/brevets"          element={<RespBrevetRoute element={<RespBrevets />} />} />
-        <Route path="/responsable/brevets/add"      element={<RespBrevetRoute element={<RespAddBrevet />} />} />
-        <Route path="/responsable/brevets/edit/:id" element={<RespBrevetRoute element={<RespEditBrevet />} />} />
-        <Route path="/responsable/brevets/view/:id" element={<RespBrevetRoute element={<RespViewBrevet />} />} />
+        <Route path="/responsable"                    element={<ProtectedRoute roles={["responsable"]}><Layout><RespDashboard /></Layout></ProtectedRoute>} />
+        <Route path="/responsable/demandes"           element={<ProtectedRoute roles={["responsable"]}><Layout><RespDemandes /></Layout></ProtectedRoute>} />
+        <Route path="/responsable/demandes/add"       element={<ProtectedRoute roles={["responsable"]}><Layout><RespAddDemande /></Layout></ProtectedRoute>} />
+        <Route path="/responsable/demandes/edit/:id"  element={<ProtectedRoute roles={["responsable"]}><Layout><RespEditDemande /></Layout></ProtectedRoute>} />
+        <Route path="/responsable/demandes/view/:id"  element={<ProtectedRoute roles={["responsable"]}><Layout><RespViewDemande /></Layout></ProtectedRoute>} />
+        <Route path="/responsable/paiements"          element={<ProtectedRoute roles={["responsable"]}><Layout><RespPaiements /></Layout></ProtectedRoute>} />
+        <Route path="/responsable/recours"            element={<ProtectedRoute roles={["responsable"]}><Layout><RespRecours /></Layout></ProtectedRoute>} />
+        <Route path="/responsable/documents"          element={<ProtectedRoute roles={["responsable"]}><Layout><RespDocuments /></Layout></ProtectedRoute>} />
+        <Route path="/responsable/brevets"            element={<RespBrevetRoute element={<RespBrevets />} />} />
+        <Route path="/responsable/brevets/add"        element={<RespBrevetRoute element={<RespAddBrevet />} />} />
+        <Route path="/responsable/brevets/edit/:id"   element={<RespBrevetRoute element={<RespEditBrevet />} />} />
+        <Route path="/responsable/brevets/view/:id"   element={<RespBrevetRoute element={<RespViewBrevet />} />} />
 
         {/* ── DIRECTEUR ── */}
         <Route path="/directeur"           element={<ProtectedRoute roles={["directeur"]}><Layout><DirDashboard /></Layout></ProtectedRoute>} />

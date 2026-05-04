@@ -1,0 +1,182 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
+.vd-page {
+  min-height: 100vh;
+  background: #f4f0ea;
+  padding: 32px 24px;
+  font-family: "DM Sans", "Segoe UI", sans-serif;
+  display: flex; align-items: flex-start; justify-content: center;
+}
+
+.vd-card {
+  width: 100%; max-width: 900px;
+  background: #fff; border-radius: 20px;
+  padding: 40px 44px;
+  box-shadow: 0 4px 6px rgba(234,97,19,.05), 0 12px 32px rgba(0,0,0,.08);
+  border: 1px solid #f0e0cc;
+  display: flex; flex-direction: column;
+}
+
+/* ── Header ── */
+.vd-header {
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 16px;
+  margin-bottom: 28px; padding-bottom: 20px;
+  border-bottom: 2px solid #f0ddd0; flex-wrap: wrap;
+}
+
+.vd-header-left { display: flex; align-items: center; gap: 16px; }
+
+.vd-icon {
+  font-size: 28px; width: 52px; height: 52px;
+  background: #fff4e6; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1.5px solid #f0ddd0;
+}
+
+.vd-header-left h2 {
+  font-size: 20px; font-weight: 700; color: #1a1a2e;
+  margin: 0 0 4px; padding-left: 14px;
+  border-left: 4px solid;
+  border-image: linear-gradient(180deg, #EA6113, #FBB931) 1;
+}
+
+.vd-header-left p { font-size: 13px; color: #a0826d; margin: 0; padding-left: 14px; }
+
+.vd-header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+/* ── Badge statut ── */
+.vd-badge {
+  font-size: 12px; font-weight: 700;
+  padding: 5px 14px; border-radius: 20px; letter-spacing: .3px;
+}
+
+.vd-badge.green { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+.vd-badge.red   { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+
+/* ── Boutons header ── */
+.vd-btn {
+  border: none; padding: 8px 16px; border-radius: 9px;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  font-family: inherit; transition: opacity .15s, transform .15s;
+  display: flex; align-items: center; gap: 6px;
+}
+
+.vd-btn:hover { opacity: .85; transform: translateY(-1px); }
+.vd-btn.print { background: #1d4ed8; color: #fff; }
+.vd-btn.dl    { background: #0f766e; color: #fff; }
+.vd-btn.edit  { background: linear-gradient(135deg,#EA6113,#F88F22); color: #fff; box-shadow: 0 3px 10px rgba(248,143,34,.3); }
+
+/* ── Badge nature ── */
+.vd-nature-badge {
+  display: inline-block;
+  background: #fff4e6; color: #EA6113;
+  font-weight: 700; font-size: 14px;
+  padding: 8px 20px; border-radius: 10px;
+  border: 1.5px solid #f0ddd0;
+}
+
+/* ── Sections ── */
+.vd-section { margin-bottom: 24px; }
+
+.vd-section-title {
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .8px; color: #EA6113;
+  display: flex; align-items: center; gap: 8px;
+  padding-bottom: 8px; margin-bottom: 14px;
+  border-bottom: 1.5px solid #f0ddd0;
+}
+
+.vd-section-title::after {
+  content: ""; flex: 1; height: 1px;
+  background: linear-gradient(90deg, #f0ddd0, transparent);
+}
+
+/* ── Info grid ── */
+.vd-info-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+}
+
+.vd-info-item {
+  background: #fdf8f3; border: 1.5px solid #f0ddd0;
+  border-radius: 10px; padding: 12px 14px;
+}
+
+.vd-info-item.full { grid-column: 1 / -1; }
+
+.vd-info-label {
+  font-size: 10px; font-weight: 700; color: #a0826d;
+  text-transform: uppercase; letter-spacing: .6px; margin-bottom: 4px;
+}
+
+.vd-info-value { font-size: 14px; color: #2d2013; font-weight: 500; }
+
+/* ── Personnes ── */
+.vd-personnes { display: flex; flex-direction: column; gap: 10px; }
+
+.vd-personne-card {
+  display: flex; align-items: center; gap: 14px;
+  border: 1.5px solid #f0ddd0; border-radius: 12px;
+  padding: 14px 18px; background: #fdf8f3;
+  transition: border-color .15s;
+}
+
+.vd-personne-card:hover { border-color: #F88F22; }
+
+.vd-avatar {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: linear-gradient(135deg, #EA6113, #FBB931);
+  color: #fff; display: flex; align-items: center;
+  justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0;
+}
+
+.vd-avatar.inv { background: linear-gradient(135deg, #0f766e, #14b8a6); }
+
+.vd-personne-name { font-size: 14px; font-weight: 700; color: #2d2013; margin-bottom: 3px; }
+.vd-personne-sub  { font-size: 11px; color: #a0826d; }
+
+.vd-personne-role {
+  display: inline-block; margin-top: 5px;
+  font-size: 11px; font-weight: 700; color: #EA6113;
+  background: #fff4e6; padding: 2px 9px;
+  border-radius: 10px; border: 1px solid #f0ddd0;
+}
+
+/* ── Pièces ── */
+.vd-pieces { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+.vd-piece-item {
+  font-size: 13px; color: #166534; font-weight: 500;
+  background: #f0fdf4; padding: 8px 12px;
+  border-radius: 8px; border: 1px solid #bbf7d0;
+  display: flex; align-items: center; gap: 6px;
+}
+
+.vd-piece-item::before { content: "✓"; font-weight: 700; color: #16a34a; }
+
+/* ── Autres infos ── */
+.vd-autres {
+  font-size: 14px; color: #2d2013; line-height: 1.7;
+  background: #fdf8f3; border-radius: 10px;
+  padding: 12px 16px; border: 1.5px solid #f0ddd0;
+}
+
+/* ── Empty ── */
+.vd-empty { font-size: 13px; color: #c4a882; font-style: italic; }
+
+/* ── Footer ── */
+.vd-footer {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 24px; border-top: 1.5px solid #f0ddd0; margin-top: 10px;
+}
+
+.vd-btn-back {
+  padding: 11px 26px; border: none; border-radius: 11px;
+  background: linear-gradient(135deg, #EA6113, #F88F22);
+  color: #fff; font-size: 14px; font-weight: 600;
+  cursor: pointer; font-family: inherit;
+  transition: opacity .18s, transform .15s;
+  box-shadow: 0 3px 12px rgba(248,143,34,.35);
+}
+
+.vd-btn-back:hover { opacity: .9; transform: translateY(-1px); }

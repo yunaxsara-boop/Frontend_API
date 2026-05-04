@@ -1,0 +1,349 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
+/* ═══════════════════════════════════════════════════════════
+   PAGE WRAPPER
+   ═══════════════════════════════════════════════════════════ */
+.add-dem-page {
+  min-height: 100vh;
+  background: #f4f0ea;
+  padding: 32px 24px;
+  font-family: "DM Sans", "Segoe UI", sans-serif;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CARD PRINCIPALE
+   ═══════════════════════════════════════════════════════════ */
+.add-dem-card {
+  width: 100%;
+  max-width: 900px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 40px 44px;
+  box-shadow:
+    0 4px 6px rgba(234, 97, 19, .05),
+    0 12px 32px rgba(0, 0, 0, .08);
+  border: 1px solid #f0e0cc;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HEADER
+   ═══════════════════════════════════════════════════════════ */
+.add-dem-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.add-dem-header-icon {
+  font-size: 28px;
+  width: 52px;
+  height: 52px;
+  background: #fff4e6;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #f0ddd0;
+  flex-shrink: 0;
+}
+
+.add-dem-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 3px;
+  padding-left: 14px;
+  border-left: 4px solid;
+  border-image: linear-gradient(180deg, #EA6113, #FBB931) 1;
+  letter-spacing: -0.2px;
+}
+
+.add-dem-header p {
+  font-size: 12px;
+  color: #a0826d;
+  margin: 0 0 0 18px;
+  font-weight: 500;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ERREUR
+   ═══════════════════════════════════════════════════════════ */
+.add-dem-error {
+  background: #fce4ec;
+  border: 1px solid #ef9a9a;
+  border-radius: 10px;
+  padding: 10px 16px;
+  color: #c62828;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SECTIONS
+   ═══════════════════════════════════════════════════════════ */
+.modal-section {
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  color: #EA6113;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  padding-bottom: 0;
+}
+
+.section-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, #f0ddd0, transparent);
+}
+
+.section-num {
+  background: linear-gradient(135deg, #EA6113, #F88F22);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  min-width: 22px;
+  text-align: center;
+  letter-spacing: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   GRILLE CHAMPS
+   ═══════════════════════════════════════════════════════════ */
+.modal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.fg {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fg.full {
+  grid-column: 1 / -1;
+}
+
+.fg label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #a0826d;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+.fg input,
+.fg textarea,
+.fg select {
+  padding: 10px 13px;
+  border-radius: 10px;
+  border: 1.5px solid #f0ddd0;
+  font-size: 13.5px;
+  background: #fdf8f3;
+  color: #2d2013;
+  font-family: inherit;
+  transition: border .15s, box-shadow .15s, background .15s;
+  outline: none;
+  resize: vertical;
+}
+
+.fg input:focus,
+.fg textarea:focus,
+.fg select:focus {
+  border-color: #F88F22;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(248, 143, 34, 0.18);
+}
+
+.fg input::placeholder,
+.fg textarea::placeholder { color: #c4a882; }
+
+/* ═══════════════════════════════════════════════════════════
+   CHECKBOXES NATURE
+   ═══════════════════════════════════════════════════════════ */
+.check-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.chk-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #2d2013;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.chk-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #EA6113;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PERSONNE CARDS
+   ═══════════════════════════════════════════════════════════ */
+.personne-card {
+  background: #fdf8f3;
+  border: 1.5px solid #f0ddd0;
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 12px;
+  transition: border-color .15s;
+}
+
+.personne-card:hover {
+  border-color: #F88F22;
+}
+
+.personne-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.personne-num {
+  font-size: 12px;
+  font-weight: 700;
+  color: #EA6113;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+.btn-remove {
+  background: none;
+  border: 1.5px solid #EA6113;
+  color: #EA6113;
+  border-radius: 8px;
+  padding: 5px 12px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  transition: background .15s, color .15s;
+}
+
+.btn-remove:hover {
+  background: #EA6113;
+  color: #fff;
+}
+
+.btn-add-more {
+  width: 100%;
+  background: none;
+  border: 1.5px dashed #F88F22;
+  color: #F88F22;
+  border-radius: 10px;
+  padding: 11px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  transition: background .15s, border-color .15s;
+  margin-bottom: 8px;
+}
+
+.btn-add-more:hover {
+  background: #fff4e6;
+  border-color: #EA6113;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PIÈCES
+   ═══════════════════════════════════════════════════════════ */
+.pieces-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.piece-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13px;
+  color: #2d2013;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 9px 13px;
+  border-radius: 10px;
+  border: 1.5px solid #f0ddd0;
+  background: #fdf8f3;
+  transition: border-color .15s, background .15s;
+}
+
+.piece-item:hover {
+  border-color: #F88F22;
+  background: #fff4e6;
+}
+
+.piece-item input[type="checkbox"] {
+  accent-color: #EA6113;
+  width: 15px;
+  height: 15px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ACTIONS
+   ═══════════════════════════════════════════════════════════ */
+.add-dem-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.btn-save {
+  flex: 1;
+  padding: 13px;
+  border: none;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #EA6113, #F88F22);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity .18s, transform .15s;
+  box-shadow: 0 3px 12px rgba(248, 143, 34, 0.35);
+  font-family: inherit;
+}
+
+.btn-save:hover    { opacity: .9; transform: translateY(-1px); }
+.btn-save:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+.btn-cancel {
+  flex: 1;
+  padding: 13px;
+  border: 1.5px solid #f0ddd0;
+  border-radius: 11px;
+  background: #fff;
+  color: #6b7280;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .15s;
+}
+
+.btn-cancel:hover { background: #fdf5ec; }
