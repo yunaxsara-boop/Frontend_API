@@ -23,3 +23,7 @@ export const updateBrevet = async (id, brevet) => {
 export const deleteBrevet = async (id) => {
   await api.delete(`brevets/${id}/`);
 };
+export const getDemandesDisponibles = async () => {
+  const response = await api.get("/brevets/demandes-disponibles/");
+  return response.data;
+};

@@ -5,9 +5,9 @@ import { getBrevets, deleteBrevet } from "../../features/brevets/brevetApi";
 
 export default function Brevets() {
   const navigate = useNavigate();
-  const [data, setData] = useState([]);
+  const [data, setData]       = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError]     = useState("");
 
   const load = async () => {
     try {
@@ -22,9 +22,7 @@ export default function Brevets() {
     }
   };
 
-  useEffect(() => {
-    load();
-  }, []);
+  useEffect(() => { load(); }, []);
 
   const handleDelete = async (row) => {
     try {
@@ -36,22 +34,21 @@ export default function Brevets() {
   };
 
   if (loading) return <p>Chargement...</p>;
-  if (error) return <p style={{ color: "red" }}>{error}</p>;
+  if (error)   return <p style={{ color: "red" }}>{error}</p>;
 
   return (
     <DataTable
       title="Liste des brevets"
       data={data}
       columns={[
-        { key: "num_brevet", label: "N° Brevet" },
-        { key: "titre", label: "Titre" },
-        { key: "date_depo", label: "Date dépôt" },
+        { key: "num_brevet",  label: "N° Brevet"  },
+        { key: "titre",       label: "Titre"       },
+        { key: "date_depo",   label: "Date dépôt"  },
         { key: "date_sortie", label: "Date sortie" },
-        { key: "titulaire", label: "Titulaire" },
+        { key: "titulaire",   label: "Titulaire"   },
         {
           key: "id_dep",
           label: "Déposant",
-          // ✅ id_dep est maintenant un objet grâce au serializer imbriqué
           render: (value) =>
             value ? `${value.nom_dep} ${value.prenom_dep}` : "Aucun",
           pdfFormat: (val) =>
@@ -60,7 +57,6 @@ export default function Brevets() {
         {
           key: "id_inv",
           label: "Inventeurs",
-          // ✅ id_inv est maintenant un tableau d'objets
           render: (value) =>
             Array.isArray(value) && value.length > 0
               ? value.map((i) => `${i.nom_inv} ${i.prenom_inv}`).join(", ")
@@ -70,6 +66,15 @@ export default function Brevets() {
               ? val.map((i) => `${i.nom_inv} ${i.prenom_inv}`).join(", ")
               : "Aucun",
         },
+        // ✅ Colonne demande liée
+        {
+          key: "id_demande",
+          label: "Demande liée",
+          render: (value) =>
+            value ? `#${value.id_demande} — ${value.titre}` : "Aucune",
+          pdfFormat: (val) =>
+            val ? `#${val.id_demande} — ${val.titre}` : "Aucune",
+        },
         { key: "statut", label: "Statut" },
         {
           key: "document_set",
@@ -77,19 +82,15 @@ export default function Brevets() {
           render: (value, row) => (
             <button
               className="btn"
-              onClick={() =>
-                navigate(`/agent/documents?brevet=${row.id_brevet}`)
-              }
+              onClick={() => navigate(`/agent/documents?brevet=${row.id_brevet}`)}
             >
-              {value?.length > 0
-                ? `${value.length} document(s)`
-                : "Ajouter document"}
+              {value?.length > 0 ? `${value.length} document(s)` : "Ajouter document"}
             </button>
           ),
           pdfExclude: true,
         },
       ]}
-      onAdd={() => navigate("/agent/brevets/add")}
+      onAdd={()     => navigate("/agent/brevets/add")}
       onEdit={(row) => navigate(`/agent/brevets/edit/${row.id_brevet}`)}
       onView={(row) => navigate(`/agent/brevets/view/${row.id_brevet}`)}
       onDelete={handleDelete}

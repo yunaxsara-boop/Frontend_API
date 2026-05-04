@@ -41,6 +41,14 @@ export default function RespBrevets() {
       title="Gestion des brevets"
       data={data}
       columns={[
+        {
+  key: "id_demande",
+  label: "Demande liée",
+  render: (value) =>
+    value ? `#${value.id_demande} — ${value.titre}` : "Aucune",
+  pdfFormat: (val) =>
+    val ? `#${val.id_demande} — ${val.titre}` : "Aucune",
+},
         { key: "num_brevet",  label: "N° Brevet"   },
         { key: "titre",       label: "Titre"        },
         { key: "date_depo",   label: "Date dépôt"  },
@@ -55,17 +63,17 @@ export default function RespBrevets() {
             val ? `${val.nom_dep} ${val.prenom_dep}` : "Aucun",
         },
         {
-          key: "id_inv",
-          label: "Inventeurs",
-          render: (value) =>
-            Array.isArray(value) && value.length > 0
-              ? value.map((i) => `${i.nom_inv} ${i.prenom_inv}`).join(", ")
-              : "Aucun",
-          pdfFormat: (val) =>
-            Array.isArray(val) && val.length > 0
-              ? val.map((i) => `${i.nom_inv} ${i.prenom_inv}`).join(", ")
-              : "Aucun",
-        },
+  key: "id_inv",
+  label: "Inventeurs",
+  render: (value) =>
+    Array.isArray(value) && value.length > 0
+      ? value.map((i) => `${i.nom_inv} ${i.prenom_inv}`).join(", ")
+      : "Aucun",
+  pdfFormat: (val) =>
+    Array.isArray(val) && val.length > 0
+      ? val.map((i) => `${i.nom_inv} ${i.prenom_inv}`).join(", ")
+      : "Aucun",
+},
         { key: "statut", label: "Statut" },
         {
           key: "document_set",

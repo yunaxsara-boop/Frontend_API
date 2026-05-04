@@ -1,43 +1,55 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./editBrevet.css";
-import { updateBrevet, getBrevetById } from "../../features/brevets/brevetApi";
+import { updateBrevet, getBrevetById, getDemandesDisponibles } from "../../features/brevets/brevetApi";
 
 export default function EditBrevet() {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const [form, setForm] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [inventeurs, setInventeurs] = useState([]);
-  const [deposant, setDeposant] = useState({
-    id_dep: null,
-    nom_dep: "",
-    prenom_dep: "",
-  });
+  const { id }    = useParams();
+  const navigate  = useNavigate();
+  const [form, setForm]         = useState(null);
+  const [loading, setLoading]   = useState(true);
+  const [error, setError]       = useState("");
+  const [inventeurs, setInventeurs]               = useState([]);
+  const [deposant, setDeposant]                   = useState({ nom_dep: "", prenom_dep: "" });
+  const [demandes, setDemandes]                   = useState([]);
+  const [demandeSelectionnee, setDemandeSelectionnee] = useState("");
 
   useEffect(() => {
-    const fetchBrevet = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
-        const data = await getBrevetById(id);
+        const [data, demandesData] = await Promise.all([
+          getBrevetById(id),
+          getDemandesDisponibles(),  // ✅ backend filtre déjà selon l'utilisateur
+        ]);
+
         setForm(data);
 
-        if (Array.isArray(data.id_inv)) {
-          setInventeurs(
-            data.id_inv.map((i) => ({
-              id_inv:     i.id_inv,
-              nom_inv:    i.nom_inv,
-              prenom_inv: i.prenom_inv,
-            }))
+        // ✅ Demande déjà liée : l'ajouter à la liste si absente
+        if (data.id_demande) {
+          setDemandeSelectionnee(String(data.id_demande.id_demande));
+          const dejaDedans = demandesData.some(
+            (d) => d.id_demande === data.id_demande.id_demande
           );
+          setDemandes(dejaDedans ? demandesData : [data.id_demande, ...demandesData]);
+        } else {
+          setDemandes(demandesData);
+        }
+
+        if (Array.isArray(data.id_inv) && data.id_inv.length > 0) {
+          setInventeurs(data.id_inv.map((i) => ({
+            id_inv:     i.id_inv,
+            nom_inv:    i.nom_inv,
+            prenom_inv: i.prenom_inv,
+          })));
+        } else {
+          setInventeurs([{ nom_inv: "", prenom_inv: "" }]);
         }
 
         if (data.id_dep) {
           setDeposant({
-            id_dep:     data.id_dep.id_dep,
-            nom_dep:    data.id_dep.nom_dep,
-            prenom_dep: data.id_dep.prenom_dep,
+            nom_dep:    data.id_dep.nom_dep    ?? "",
+            prenom_dep: data.id_dep.prenom_dep ?? "",
           });
         }
       } catch {
@@ -46,7 +58,7 @@ export default function EditBrevet() {
         setLoading(false);
       }
     };
-    fetchBrevet();
+    fetchData();
   }, [id]);
 
   const handleChange = (e) =>
@@ -59,7 +71,7 @@ export default function EditBrevet() {
   };
 
   const ajouterInventeur = () =>
-    setInventeurs([...inventeurs, { id_inv: null, nom_inv: "", prenom_inv: "" }]);
+    setInventeurs([...inventeurs, { nom_inv: "", prenom_inv: "" }]);
 
   const supprimerInventeur = (index) =>
     setInventeurs(inventeurs.filter((_, i) => i !== index));
@@ -68,15 +80,12 @@ export default function EditBrevet() {
     try {
       await updateBrevet(id, {
         ...form,
-        num_brevet: Number(form.num_brevet),
-        num_depo:   Number(form.num_depo),
-        deposant_data: {
-          nom_dep:    deposant.nom_dep,
-          prenom_dep: deposant.prenom_dep,
-        },
-        inventeurs_data: inventeurs.map((i) => ({
-          nom_inv:    i.nom_inv,
-          prenom_inv: i.prenom_inv,
+        num_brevet:       Number(form.num_brevet),
+        num_depo:         Number(form.num_depo),
+        id_demande_input: demandeSelectionnee ? Number(demandeSelectionnee) : null,
+        deposant_data:    { nom_dep: deposant.nom_dep, prenom_dep: deposant.prenom_dep },
+        inventeurs_data:  inventeurs.map((i) => ({
+          nom_inv: i.nom_inv, prenom_inv: i.prenom_inv,
         })),
       });
       navigate("/agent/brevets");
@@ -95,45 +104,59 @@ export default function EditBrevet() {
       <div className="edit-card">
         <h2 className="edit-title">Modifier le brevet</h2>
 
-        {/* ══ Identification ══ */}
+        {error && <p style={{ color: "red" }}>{error}</p>}
+
+        {/* ✅ Sélection demande — uniquement les siennes */}
+        <div className="edit-section-label">Demande liée</div>
+        <div className="edit-grid">
+          <div className="form-group">
+            <label>Demande associée</label>
+            <select
+              value={demandeSelectionnee}
+              onChange={(e) => setDemandeSelectionnee(e.target.value)}
+            >
+              <option value="">-- Aucune demande --</option>
+              {demandes.map((d) => (
+                <option key={d.id_demande} value={d.id_demande}>
+                  #{d.id_demande} — {d.titre}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
         <div className="edit-section-label">Identification</div>
         <div className="edit-grid">
           <div className="form-group">
             <label>Numéro brevet</label>
             <input name="num_brevet" value={form.num_brevet ?? ""} onChange={handleChange} />
           </div>
-
           <div className="form-group">
             <label>Titre</label>
             <input name="titre" value={form.titre ?? ""} onChange={handleChange} />
           </div>
-
           <div className="form-group">
             <label>Numéro de dépôt</label>
             <input name="num_depo" value={form.num_depo ?? ""} onChange={handleChange} />
           </div>
-
           <div className="form-group">
             <label>Titulaire</label>
             <input name="titulaire" value={form.titulaire ?? ""} onChange={handleChange} />
           </div>
         </div>
 
-        {/* ══ Dates ══ */}
         <div className="edit-section-label">Dates</div>
         <div className="edit-grid">
           <div className="form-group">
             <label>Date de dépôt</label>
             <input type="date" name="date_depo" value={form.date_depo ?? ""} onChange={handleChange} />
           </div>
-
           <div className="form-group">
             <label>Date sortie</label>
             <input type="date" name="date_sortie" value={form.date_sortie ?? ""} onChange={handleChange} />
           </div>
         </div>
 
-        {/* ══ Statut ══ */}
         <div className="edit-section-label">Statut</div>
         <div className="edit-grid">
           <div className="form-group">
@@ -146,7 +169,6 @@ export default function EditBrevet() {
           </div>
         </div>
 
-        {/* ══ Déposant ══ */}
         <div className="edit-section-label">Déposant</div>
         <div className="personne-card">
           <div className="personne-row">
@@ -167,13 +189,8 @@ export default function EditBrevet() {
           </div>
         </div>
 
-        {/* ══ Inventeurs ══ */}
         <div className="edit-section-label">Inventeurs</div>
-
-        {inventeurs.length === 0 && (
-          <p className="edit-empty">Aucun inventeur</p>
-        )}
-
+        {inventeurs.length === 0 && <p className="edit-empty">Aucun inventeur</p>}
         {inventeurs.map((inv, index) => (
           <div key={index} className="personne-card">
             <div className="personne-card-header">
@@ -209,12 +226,10 @@ export default function EditBrevet() {
           + Ajouter un inventeur
         </button>
 
-        {/* ══ Actions ══ */}
         <div className="edit-actions">
           <button className="btn-save" onClick={handleSubmit}>Enregistrer</button>
           <button className="btn-cancel" onClick={() => navigate("/agent/brevets")}>Annuler</button>
         </div>
-
       </div>
     </div>
   );
