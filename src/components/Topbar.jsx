@@ -4,19 +4,27 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
+import PersonIcon from "@mui/icons-material/Person";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import SyncAltIcon from "@mui/icons-material/SyncAlt";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import DescriptionIcon from "@mui/icons-material/Description";
+import GavelIcon from "@mui/icons-material/Gavel";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 import { useAuth } from "../contexts/AuthContext";
 import { useNotifications } from "../contexts/NotificationContext";
 import { useNavigate } from "react-router-dom";
 
 const TYPE_CONFIG = {
-  user:     { emoji: "👤", color: "#7c3aed", bg: "#f3e8ff" },
-  warning:  { emoji: "⚠️", color: "#f59e0b", bg: "#fef3c7" },
-  role:     { emoji: "🔄", color: "#2196f3", bg: "#e3f2fd" },
-  success:  { emoji: "✅", color: "#10b981", bg: "#d1fae5" },
-  document: { emoji: "📄", color: "#2196f3", bg: "#e3f2fd" },
-  recours:  { emoji: "⚖️", color: "#ef5350", bg: "#ffeaea" },
-  brevet:   { emoji: "🏅", color: "#ff7a18", bg: "#fff3e0" },
-  demande:  { emoji: "📋", color: "#7c3aed", bg: "#f3e8ff" },
+  user:     { icon: PersonIcon,             color: "#7c3aed", bg: "#f3e8ff" },
+  warning:  { icon: WarningAmberIcon,       color: "#f59e0b", bg: "#fef3c7" },
+  role:     { icon: SyncAltIcon,            color: "#2196f3", bg: "#e3f2fd" },
+  success:  { icon: CheckCircleOutlineIcon, color: "#10b981", bg: "#d1fae5" },
+  document: { icon: DescriptionIcon,        color: "#2196f3", bg: "#e3f2fd" },
+  recours:  { icon: GavelIcon,              color: "#ef5350", bg: "#ffeaea" },
+  brevet:   { icon: EmojiEventsIcon,        color: "#ff7a18", bg: "#fff3e0" },
+  demande:  { icon: AssignmentIcon,         color: "#7c3aed", bg: "#f3e8ff" },
 };
 
 // ── Pages accessibles par rôle ──────────────────────────────
@@ -57,13 +65,12 @@ export default function Topbar({ collapsed, setCollapsed }) {
   const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotifications();
   const navigate = useNavigate();
 
-  const [panelOpen, setPanelOpen]   = useState(false);
+  const [panelOpen, setPanelOpen]     = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchOpen, setSearchOpen]   = useState(false);
   const panelRef  = useRef(null);
   const searchRef = useRef(null);
 
-  // Ferme le panel notif si clic en dehors
   useEffect(() => {
     function handleClickOutside(e) {
       if (panelRef.current && !panelRef.current.contains(e.target))
@@ -75,7 +82,6 @@ export default function Topbar({ collapsed, setCollapsed }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Résultats de recherche filtrés selon le rôle
   const searchResults = useMemo(() => {
     if (!searchQuery.trim() || !user?.role) return [];
     const pages = PAGES_BY_ROLE[user.role] || [];
@@ -116,7 +122,6 @@ export default function Topbar({ collapsed, setCollapsed }) {
               onChange={(e) => { setSearchQuery(e.target.value); setSearchOpen(true); }}
               onFocus={() => setSearchOpen(true)}
             />
-            {/* Dropdown résultats */}
             {searchOpen && searchResults.length > 0 && (
               <div className="searchDropdown">
                 {searchResults.map((p) => (
@@ -167,12 +172,13 @@ export default function Topbar({ collapsed, setCollapsed }) {
                 <div className="notifList">
                   {notifications.length === 0 ? (
                     <div className="notifEmpty">
-                      <span className="notifEmptyIcon">🔔</span>
+                      <span className="notifEmptyIcon"><NotificationsIcon /></span>
                       <p>Aucune notification</p>
                     </div>
                   ) : (
                     notifications.map((notif) => {
                       const cfg = TYPE_CONFIG[notif.type] || TYPE_CONFIG.success;
+                      const IconComponent = cfg.icon;
                       return (
                         <div
                           key={notif.id}
@@ -181,7 +187,7 @@ export default function Topbar({ collapsed, setCollapsed }) {
                         >
                           {!notif.read && <div className="unreadDot" />}
                           <div className="notifIcon" style={{ background: cfg.bg, color: cfg.color }}>
-                            <span>{cfg.emoji}</span>
+                            <IconComponent style={{ fontSize: 20, color: cfg.color }} />
                           </div>
                           <div className="notifContent">
                             <p className="notifTitle">{notif.title}</p>
@@ -202,7 +208,7 @@ export default function Topbar({ collapsed, setCollapsed }) {
             )}
           </div>
 
-          {/* USER — affiche le username réel */}
+          {/* USER */}
           <div className="userContainer">
             <AccountCircleIcon className="userIcon" />
             <div className="userInfo">
