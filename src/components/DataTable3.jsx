@@ -1,28 +1,18 @@
 import React, { useState, useMemo } from "react";
-import SearchIcon from "@mui/icons-material/Search";
-import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import TableChartIcon from "@mui/icons-material/TableChart";
-import DownloadIcon from "@mui/icons-material/Download";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import SearchIcon        from "@mui/icons-material/Search";
+import PictureAsPdfIcon  from "@mui/icons-material/PictureAsPdf";
+import PrintIcon         from "@mui/icons-material/Print";
+import ArrowUpwardIcon   from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import UnfoldMoreIcon from "@mui/icons-material/UnfoldMore";
+import UnfoldMoreIcon    from "@mui/icons-material/UnfoldMore";
 import "./DataTable3.css";
 
-/* ════════════════════════════════════════════════
-   BADGE — affiche un label coloré
-   color: "green" | "yellow" | "red" | "blue" | "gray" | "orange" | "purple"
-════════════════════════════════════════════════ */
 export function Badge({ label, color = "gray" }) {
   if (!label || label === "—")
     return <span className="dt3-muted">—</span>;
-  return (
-    <span className={`dt3-badge b-${color}`}>{label}</span>
-  );
+  return <span className={`dt3-badge b-${color}`}>{label}</span>;
 }
 
-/* ════════════════════════════════════════════════
-   PAGINATION
-════════════════════════════════════════════════ */
 function Pagination({ page, totalPages, total, perPage, setPage, setPerPage }) {
   const maxBtn = 7;
   let pages = [];
@@ -61,47 +51,14 @@ function Pagination({ page, totalPages, total, perPage, setPage, setPerPage }) {
   );
 }
 
-/* ════════════════════════════════════════════════
-   SORT ICON
-════════════════════════════════════════════════ */
 function SortIcon({ col, sortCol, sortDir }) {
   if (sortCol !== col)
     return <UnfoldMoreIcon className="dt3-sort" style={{ fontSize: 13 }} />;
   return sortDir === "asc"
-    ? <ArrowUpwardIcon  className="dt3-sort on" style={{ fontSize: 13 }} />
+    ? <ArrowUpwardIcon   className="dt3-sort on" style={{ fontSize: 13 }} />
     : <ArrowDownwardIcon className="dt3-sort on" style={{ fontSize: 13 }} />;
 }
 
-/* ════════════════════════════════════════════════
-   DATATABLE3 — Composant principal
-
-   Props :
-   ─────────────────────────────────────────────
-   icon        : ReactNode  — icône dans le header
-   title       : string     — titre de la page
-   subtitle    : string     — sous-titre
-   stats       : Array<{ label, value, color? }> — cartes stats
-   columns     : Array<{
-                   key       : string,
-                   label     : string,
-                   sortable? : bool,
-                   render?   : (row) => ReactNode   ← rendu custom
-                 }>
-   data        : Array<object>
-   searchKeys  : Array<string>  — colonnes cherchées
-   statusKey   : string         — clé utilisée pour filtre statut
-   statusList  : Array<string>  — ex: ["Tous","Payé","Retard"]
-   extraFilters?: Array<{       — filtres supplémentaires (ex: type fichier)
-                   key: string,
-                   label: string,
-                   options: Array<string>
-                 }>
-   pdfTitle    : string
-   pdfColumns  : Array<string>  — en-têtes PDF
-   pdfRow      : (row) => Array — ligne PDF
-   excelRow    : (row) => object — ligne Excel
-   fileName    : string         — nom du fichier exporté (sans extension)
-════════════════════════════════════════════════ */
 export default function DataTable3({
   icon,
   title,
@@ -116,20 +73,18 @@ export default function DataTable3({
   pdfTitle = "",
   pdfColumns = [],
   pdfRow = () => [],
-  excelRow = () => ({}),
   fileName = "export",
 }) {
-  const [search, setSearch]           = useState("");
-  const [statusFilter, setStatus]     = useState("Tous");
-  const [extraState, setExtra]        = useState(
+  const [search, setSearch]       = useState("");
+  const [statusFilter, setStatus] = useState("Tous");
+  const [extraState, setExtra]    = useState(
     Object.fromEntries(extraFilters.map((f) => [f.key, "Tous"]))
   );
-  const [sortCol, setSortCol]         = useState(null);
-  const [sortDir, setSortDir]         = useState("asc");
-  const [page, setPage]               = useState(1);
-  const [perPage, setPerPage]         = useState(10);
+  const [sortCol, setSortCol]     = useState(null);
+  const [sortDir, setSortDir]     = useState("asc");
+  const [page, setPage]           = useState(1);
+  const [perPage, setPerPage]     = useState(10);
 
-  /* ── filtrage + tri ── */
   const filtered = useMemo(() => {
     let d = [...data];
     if (search) {
@@ -166,7 +121,6 @@ export default function DataTable3({
     setPage(1);
   };
 
-  /* ── export PDF ── */
   const handlePDF = () => {
     import("jspdf").then(({ default: jsPDF }) => {
       import("jspdf-autotable").then(() => {
@@ -175,7 +129,10 @@ export default function DataTable3({
         doc.text(pdfTitle || title, 14, 16);
         doc.setFontSize(9);
         doc.setTextColor(150);
-        doc.text(`Exporté le ${new Date().toLocaleDateString("fr-FR")} — ${filtered.length} enregistrement(s)`, 14, 23);
+        doc.text(
+          `Exporté le ${new Date().toLocaleDateString("fr-FR")} — ${filtered.length} enregistrement(s)`,
+          14, 23
+        );
         doc.autoTable({
           startY: 28,
           head: [pdfColumns],
@@ -189,19 +146,51 @@ export default function DataTable3({
     });
   };
 
-  /* ── export Excel ── */
-  const handleExcel = () => {
-    import("xlsx").then((XLSX) => {
-      const ws = XLSX.utils.json_to_sheet(filtered.map(excelRow));
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, title.substring(0, 31));
-      XLSX.writeFile(wb, `${fileName}.xlsx`);
-    });
+  const handlePrint = () => {
+    const rows = filtered.map(pdfRow);
+
+    const html = `
+      <html>
+        <head>
+          <title>${pdfTitle || title}</title>
+          <style>
+            body { font-family: "Segoe UI", Arial, sans-serif; padding: 24px; color: #1a1a2e; }
+            h2 { font-size: 18px; margin-bottom: 6px; }
+            p  { font-size: 12px; color: #a0826d; margin-bottom: 16px; }
+            table { width: 100%; border-collapse: collapse; font-size: 12px; }
+            thead tr { background: #EA6113; color: #fff; }
+            th { padding: 10px 12px; text-align: left; font-weight: 600; text-transform: uppercase; font-size: 10.5px; letter-spacing: .4px; }
+            td { padding: 9px 12px; border-bottom: 1px solid #f0e0cc; color: #2d2013; }
+            tr:nth-child(even) td { background: #fdfaf7; }
+            tr:last-child td { border-bottom: none; }
+          </style>
+        </head>
+        <body>
+          <h2>${pdfTitle || title}</h2>
+          <p>Imprimé le ${new Date().toLocaleDateString("fr-FR")} — ${filtered.length} enregistrement(s)</p>
+          <table>
+            <thead>
+              <tr>${pdfColumns.map((c) => `<th>${c}</th>`).join("")}</tr>
+            </thead>
+            <tbody>
+              ${rows.map((r) => `<tr>${r.map((cell) => `<td>${cell ?? ""}</td>`).join("")}</tr>`).join("")}
+            </tbody>
+          </table>
+        </body>
+      </html>
+    `;
+
+    const win = window.open("", "_blank");
+    win.document.write(html);
+    win.document.close();
+    win.focus();
+    win.print();
+    win.close();
   };
 
   return (
     <div className="dt3-page">
-      {/* ── HEADER ── */}
+
       <div className="dt3-header">
         <div className="dt3-title-block">
           <div className="dt3-icon-box">{icon}</div>
@@ -214,13 +203,12 @@ export default function DataTable3({
           <button className="dt3-btn dt3-btn-pdf" onClick={handlePDF}>
             <PictureAsPdfIcon style={{ fontSize: 16 }} /> Exporter PDF
           </button>
-          <button className="dt3-btn dt3-btn-excel" onClick={handleExcel}>
-            <TableChartIcon style={{ fontSize: 16 }} /> Exporter Excel
+          <button className="dt3-btn dt3-btn-print" onClick={handlePrint}>
+            <PrintIcon style={{ fontSize: 16 }} /> Imprimer
           </button>
         </div>
       </div>
 
-      {/* ── STATS ── */}
       {stats.length > 0 && (
         <div className="dt3-stats">
           {stats.map((s, i) => (
@@ -232,22 +220,18 @@ export default function DataTable3({
         </div>
       )}
 
-      {/* ── TABLE CARD ── */}
       <div className="dt3-card">
-        {/* Toolbar */}
         <div className="dt3-toolbar">
           <div className="dt3-toolbar-left">
             <div className="dt3-search-wrap">
-  <div>
-    <SearchIcon style={{ fontSize: 17 }} />
-  </div>
-  <input
-    className="dt3-search"
-    placeholder="Rechercher..."
-    value={search}
-    onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-  />
-</div>
+              <div><SearchIcon style={{ fontSize: 17 }} /></div>
+              <input
+                className="dt3-search"
+                placeholder="Rechercher..."
+                value={search}
+                onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+              />
+            </div>
             {statusList.length > 1 && (
               <select className="dt3-select" value={statusFilter}
                 onChange={(e) => { setStatus(e.target.value); setPage(1); }}>
@@ -265,7 +249,6 @@ export default function DataTable3({
           <span className="dt3-count">{filtered.length} résultat{filtered.length > 1 ? "s" : ""}</span>
         </div>
 
-        {/* Table */}
         <div className="dt3-table-wrap">
           <table className="dt3-table">
             <thead>
@@ -306,7 +289,6 @@ export default function DataTable3({
           </table>
         </div>
 
-        {/* Pagination */}
         <Pagination
           page={safePage}
           totalPages={totalPages}

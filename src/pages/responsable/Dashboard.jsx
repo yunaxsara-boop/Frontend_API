@@ -1,5 +1,6 @@
 
-import { useState, useMemo, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import StatCard from "../../components/dashboard/StatCard";
 import BarChartCard from "../../components/dashboard/BarChartCard";
 import DonutChartCard from "../../components/dashboard/DonutChartCard";
@@ -21,37 +22,32 @@ const formatDate = (iso) => {
 };
 
 export default function RespDashboard() {
+  const navigate = useNavigate();
+
   const [mode, setMode]         = useState("Mois");
   const [selected, setSelected] = useState("");
   const [dashData, setDashData] = useState(null);
   const [loading, setLoading]   = useState(true);
   const [error, setError]       = useState("");
 
-  // ✅ Charger les données avec les paramètres de filtre
   const fetchDash = useCallback(async (currentMode, currentSelected) => {
-  try {
-    setLoading(true);
-    setError("");
+    try {
+      setLoading(true);
+      setError("");
+      const params = currentSelected
+        ? { mode: currentMode, selected: currentSelected }
+        : {};
+      const res = await api.get("/dashboard/stats/", { params });
+      console.log("DATA DASHBOARD:", res.data);
+      setDashData(res.data);
+    } catch (err) {
+      console.error(err);
+      setError("Erreur chargement du tableau de bord.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-    const params = currentSelected
-      ? { mode: currentMode, selected: currentSelected }
-      : {};
-
-    const res = await api.get("/dashboard/stats/", { params });
-
-    console.log("DATA DASHBOARD:", res.data); // ✅ DEBUG
-
-    setDashData(res.data);
-
-  } catch (err) {
-    console.error(err); // ✅ voir erreur réelle
-    setError("Erreur chargement du tableau de bord.");
-  } finally {
-    setLoading(false);
-  }
-}, []);
-
-  // ✅ Recharger à chaque changement de filtre
   useEffect(() => {
     fetchDash(mode, selected);
   }, [mode, selected, fetchDash]);
@@ -67,7 +63,6 @@ export default function RespDashboard() {
   return (
     <div className="dash-page">
 
-      {/* FILTRE */}
       <div className="dash-filter-bar">
         <div>
           <h1 style={{ fontSize: "22px", fontWeight: 700, color: "#1a1a2e", margin: 0, letterSpacing: "-0.3px" }}>
@@ -80,7 +75,6 @@ export default function RespDashboard() {
 
         <div style={{ display: "flex", alignItems: "center", gap: "12px", marginLeft: "auto", flexWrap: "wrap" }}>
           <span className="dash-filter-label">Filtrer par</span>
-
           <div className="dash-filter-modes">
             {MODES.map((m) => (
               <button
@@ -92,7 +86,6 @@ export default function RespDashboard() {
               </button>
             ))}
           </div>
-
           <input
             className="dash-filter-input"
             type={inputType}
@@ -102,7 +95,6 @@ export default function RespDashboard() {
             placeholder={mode === "Année" ? "ex: 2024" : ""}
             onChange={(e) => setSelected(e.target.value)}
           />
-
           {selected && (
             <button className="dash-filter-reset" onClick={() => setSelected("")}>
               ✕ Réinitialiser
@@ -114,7 +106,6 @@ export default function RespDashboard() {
       {loading && <p style={{ padding: "16px" }}>Chargement...</p>}
       {error   && <p style={{ padding: "16px", color: "red" }}>{error}</p>}
 
-      {/* STATS CARDS */}
       <div className="stats-grid">
         <StatCard icon={IconBrevet}  value={stats.total_brevets    ?? 0} label="Total Brevets"    trend="8%"  trendUp         color="orange" />
         <StatCard icon={IconAccepte} value={stats.brevets_acceptes ?? 0} label="Brevets acceptés" trend="12%" trendUp         color="green"  />
@@ -122,27 +113,15 @@ export default function RespDashboard() {
         <StatCard icon={IconRecours} value={stats.total_recours    ?? 0} label="Total Recours"    trend="4%"  trendUp={false} color="purple" />
       </div>
 
-      {/* CHARTS */}
       <div className="charts-row">
-        {/* ✅ Bar chart connecté aux vraies données */}
         <BarChartCard
           title="Revenus & Paiements"
           labels={barData.labels.length > 0 ? barData.labels : ["Aucune donnée"]}
           datasets={[
-            {
-              label: "Revenus",
-              data: barData.revenus.length > 0 ? barData.revenus : [0],
-              borderRadius: 6,
-            },
-            {
-              label: "Paiements",
-              data: barData.paiements.length > 0 ? barData.paiements : [0],
-              borderRadius: 6,
-            },
+            { label: "Revenus",   data: barData.revenus.length > 0   ? barData.revenus   : [0], borderRadius: 6 },
+            { label: "Paiements", data: barData.paiements.length > 0 ? barData.paiements : [0], borderRadius: 6 },
           ]}
         />
-
-        {/* ✅ Donut chart connecté aux vraies données */}
         <DonutChartCard
           title="Statut des brevets"
           labels={["Acceptés", "Refusés", "En attente"]}
@@ -151,7 +130,6 @@ export default function RespDashboard() {
         />
       </div>
 
-      {/* TABLES */}
       <div className="tables-row">
         <RecentTable
           title="Derniers brevets"
@@ -164,6 +142,7 @@ export default function RespDashboard() {
           rows={brevets}
           badgeKey="statut"
           badgeMap={{ EN_ATTENTE: "b-pending", ACCEPTER: "b-delivered", REFUSER: "b-refused" }}
+          voirToutLink="/responsable/brevets"
         />
         <RecentTable
           title="Derniers paiements"
@@ -176,6 +155,7 @@ export default function RespDashboard() {
           rows={paiements}
           badgeKey="statut"
           badgeMap={{ "Payé": "b-delivered", "Non payé": "b-pending" }}
+          voirToutLink="/responsable/paiements"
         />
       </div>
 

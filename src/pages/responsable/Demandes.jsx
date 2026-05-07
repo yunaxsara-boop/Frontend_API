@@ -24,7 +24,8 @@ export default function RespDemandes() {
       const res = await getDemandes();
       const all = res.results || res;
       setMesData(all.filter(d => d.createur_id === user.id));
-      setAgentsData(all.filter(d => d.createur_id !== user.id));
+      // ✅ Correction : exclure les demandes des autres responsables
+      setAgentsData(all.filter(d => d.createur_id !== user.id && d.createur_groupe === 'agent'));
     } catch {
       setError("Erreur chargement des demandes.");
     } finally {
@@ -153,7 +154,7 @@ export default function RespDemandes() {
         onDelete={handleDelete}
       />
 
-      {/* ── TABLE 2 : Demandes des agents ── */}
+      {/* ── TABLE 2 : Demandes des agents uniquement ── */}
       <DataTable
         title="Demandes des Agents"
         data={agentsData}

@@ -392,3 +392,41 @@
 }
 
 .btn:hover { opacity: .9; transform: translateY(-1px); }
+
+/* ── BOUTON IMPRIMER ── */
+.dt-btn-print {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: none !important;
+  border-radius: 9px;
+  background: #1d4ed8 !important;
+  color: #fff !important;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity .18s;
+  font-family: inherit;
+}
+
+.dt-btn-print:hover { opacity: .85; }
+
+/* ── IMPRESSION ── */
+@media print {
+  .dt-header,
+  .dt-search-wrap,
+  .dt-pagination,
+  .dt-actions-cell,
+  .dt-left {
+    display: none !important;
+  }
+
+  .dt-table-card {
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+  }
+
+  .dt-table { width: 100%; font-size: 11px; }
+}

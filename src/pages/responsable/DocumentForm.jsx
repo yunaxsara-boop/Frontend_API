@@ -9,29 +9,34 @@ export default function DocumentForm({ onSubmit, editData, onCancel }) {
   const fileRef = useRef();
 
   const emptyForm = {
-    id_brevet: "",
-    nom_document: "",
+    id_brevet:     "",
+    nom_document:  "",
     type_document: "",
-    description: "",
-    fichier: null,
+    description:   "",
+    fichier:       null,
   };
 
-  const [form, setForm] = useState(emptyForm);
+  const [form, setForm]       = useState(emptyForm);
   const [brevets, setBrevets] = useState([]);
+  const [types, setTypes]     = useState([]);   // [{ value, label }]
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError]     = useState("");
 
-  // ✅ Charger les brevets depuis l'API
+  // ✅ Charger brevets + types (depuis TYPE_CHOICES du modèle)
   useEffect(() => {
-    const fetchBrevets = async () => {
+    const fetchData = async () => {
       try {
-        const res = await api.get("brevets/");
-        setBrevets(res.data.results ?? res.data);
+        const [brevetRes, typeRes] = await Promise.all([
+          api.get("brevets/"),
+          api.get("documents/types/"),
+        ]);
+        setBrevets(brevetRes.data.results ?? brevetRes.data);
+        setTypes(typeRes.data); // [{ value: "brevet", label: "Brevet" }, ...]
       } catch {
-        console.error("Erreur chargement brevets");
+        console.error("Erreur chargement des données");
       }
     };
-    fetchBrevets();
+    fetchData();
   }, []);
 
   // ✅ Pré-remplir si édition
@@ -42,7 +47,7 @@ export default function DocumentForm({ onSubmit, editData, onCancel }) {
         nom_document:  editData.nom_document  ?? "",
         type_document: editData.type_document ?? "",
         description:   editData.description   ?? "",
-        fichier:       null, // ← ne pas pré-charger le fichier serveur
+        fichier:       null,
       });
     } else {
       setForm(emptyForm);
@@ -85,12 +90,7 @@ export default function DocumentForm({ onSubmit, editData, onCancel }) {
     if (onCancel) onCancel();
   };
 
-  const fileName =
-    form.fichier instanceof File
-      ? form.fichier.name
-      : null;
-
-  // ✅ Nom du fichier existant (édition)
+  const fileName = form.fichier instanceof File ? form.fichier.name : null;
   const existingFile =
     editData?.fichier && typeof editData.fichier === "string"
       ? editData.fichier.split("/").pop()
@@ -102,13 +102,9 @@ export default function DocumentForm({ onSubmit, editData, onCancel }) {
 
       {error && <p style={{ color: "red", fontSize: "13px" }}>{error}</p>}
 
-      {/* ✅ Select brevet depuis l'API */}
+      {/* ✅ Select brevet */}
       <label className="field-label">Brevet lié</label>
-      <select
-        name="id_brevet"
-        value={form.id_brevet}
-        onChange={handleChange}
-      >
+      <select name="id_brevet" value={form.id_brevet} onChange={handleChange}>
         <option value="">-- Aucun brevet --</option>
         {brevets.map((b) => (
           <option key={b.id_brevet} value={b.id_brevet}>
@@ -126,15 +122,21 @@ export default function DocumentForm({ onSubmit, editData, onCancel }) {
         required
       />
 
-      {/* ✅ Type libre — accepte n'importe quel type */}
+      {/* ✅ Select type depuis TYPE_CHOICES */}
       <label className="field-label">Type de document</label>
-      <input
+      <select
         name="type_document"
         value={form.type_document}
         onChange={handleChange}
-        placeholder="Ex: Contrat, Rapport, Facture..."
         required
-      />
+      >
+        <option value="">-- Choisir un type --</option>
+        {types.map((t) => (
+          <option key={t.value} value={t.value}>
+            {t.label}
+          </option>
+        ))}
+      </select>
 
       <label className="field-label">Description</label>
       <textarea
@@ -145,7 +147,7 @@ export default function DocumentForm({ onSubmit, editData, onCancel }) {
         rows="3"
       />
 
-      {/* ✅ Upload fichier — tout format accepté */}
+      {/* ✅ Upload fichier */}
       <label className="field-label">Fichier</label>
       <input
         ref={fileRef}
@@ -172,11 +174,7 @@ export default function DocumentForm({ onSubmit, editData, onCancel }) {
         <div className="file-selected-row">
           <AttachFileIcon style={{ fontSize: 15, color: "#EA6113" }} />
           <span className="file-selected-name">{fileName}</span>
-          <label
-            htmlFor="file-upload"
-            className="file-change-btn"
-            title="Changer le fichier"
-          >
+          <label htmlFor="file-upload" className="file-change-btn" title="Changer">
             <ChangeCircleOutlinedIcon style={{ fontSize: 16 }} />
             Changer
           </label>
@@ -184,7 +182,7 @@ export default function DocumentForm({ onSubmit, editData, onCancel }) {
             type="button"
             className="file-remove-btn"
             onClick={handleRemoveFile}
-            title="Supprimer le fichier"
+            title="Supprimer"
           >
             <DeleteOutlineIcon style={{ fontSize: 16 }} />
           </button>

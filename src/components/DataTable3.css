@@ -323,3 +323,32 @@ table.dt3-table {
 }
 
 .dt3-pb:disabled { opacity: .35; cursor: default; }
+
+/* ── BOUTON IMPRIMER ── */
+.dt3-btn-print {
+  background: #dbeafe !important;
+  color: #1d4ed8 !important;
+}
+
+/* ── IMPRESSION ── */
+@media print {
+  .dt3-header,
+  .dt3-toolbar,
+  .dt3-pagination,
+  .dt3-stats {
+    display: none !important;
+  }
+
+  .dt3-page {
+    padding: 0 !important;
+    background: #fff !important;
+  }
+
+  .dt3-card {
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+  }
+
+  .dt3-table { width: 100%; font-size: 11px; }
+}
